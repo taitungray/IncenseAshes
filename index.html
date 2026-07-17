@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>廟埕守香</title>
+    <link rel="stylesheet" href="style.css?v=visual-polish-1">
+</head>
+<body>
+  <main id="game-shell">
+    <header class="top-panel">
+      <div>
+        <p class="eyebrow">台灣神明文字塔防</p>
+        <h1>廟埕守香</h1>
+      </div>
+      <button id="restart-btn" type="button">重開</button>
+    </header>
+
+    <section class="status-bar" aria-label="戰況">
+      <div class="stat">
+        <span>香爐</span>
+        <strong id="base-hp">10/10</strong>
+      </div>
+      <div class="stat">
+        <span>波次</span>
+        <strong id="wave">1</strong>
+      </div>
+      <div class="stat">
+        <span>香火</span>
+        <strong id="grain">80</strong>
+      </div>
+      <div class="stat">
+        <span>降伏</span>
+        <strong id="kills">0</strong>
+      </div>
+    </section>
+
+    <section class="battlefield" aria-label="廟埕">
+      <div id="board"></div>
+      <div id="enemy-layer" aria-hidden="true"></div>
+      <div id="fx-layer" aria-hidden="true"></div>
+    </section>
+
+    <section class="command-panel" aria-label="法牌">
+      <div class="bench-header">
+        <span>法牌</span>
+        <button id="summon-btn" type="button">請牌 <small id="summon-cost">18</small></button>
+      </div>
+      <div id="bench"></div>
+    </section>
+
+    <section class="codex-panel" aria-label="神明譜">
+      <div class="codex-title">神明譜</div>
+      <div class="recipe-grid">
+        <span>符 香 鈴 劍 印</span>
+        <span>媽/祖隨機出</span>
+        <span>關/公隨機出</span>
+        <span>城/隍隨機出</span>
+        <span>觀/音隨機出</span>
+        <span>王/爺隨機出</span>
+      </div>
+      <p id="battle-log">廟埕安靜，法牌待請。</p>
+    </section>
+  </main>
+
+  <div id="choice-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="choice-title">
+    <div class="modal-card">
+      <p class="eyebrow">籤詩</p>
+      <h2 id="choice-title">擇一加持</h2>
+      <div id="choice-list" class="choice-list"></div>
+    </div>
+  </div>
+
+  <div id="result-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="result-title">
+    <div class="modal-card result-card">
+      <p class="eyebrow" id="result-kicker">廟報</p>
+      <h2 id="result-title">香火未斷</h2>
+      <p id="result-copy"></p>
+      <button id="result-btn" type="button">再來一局</button>
+    </div>
+  </div>
+
+    <script src="game.js?v=visual-polish-1"></script>
+</body>
+</html>
