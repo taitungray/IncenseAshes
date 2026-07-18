@@ -13,16 +13,16 @@ const PATH = [
 ];
 
 const BASE_UNITS = {
-  "符": { name: "鎮煞符", range: 2.25, damage: 13, cooldown: 25, color: "#c53424", special: "single", effect: "charm" },
-  "香": { name: "祈願清香", range: 3.05, damage: 10, cooldown: 23, color: "#d7a02f", special: "single", effect: "incense" },
-  "鈴": { name: "淨壇法鈴", range: 1.55, damage: 20, cooldown: 32, color: "#14618a", special: "single", effect: "bell" },
+  "符": { name: "鎮煞符", range: 2.75, damage: 9, cooldown: 28, color: "#c53424", special: "charm", effect: "charm" },
+  "鏡": { name: "照妖法鏡", range: 3.2, damage: 8, cooldown: 25, color: "#d7a02f", special: "mirror", effect: "mirror" },
+  "鈴": { name: "淨壇法鈴", range: 1.7, damage: 12, cooldown: 34, color: "#14618a", special: "bell", effect: "bell" },
   "劍": { name: "斬煞法劍", range: 1.45, damage: 25, cooldown: 34, color: "#087668", special: "single", effect: "sword" },
-  "印": { name: "敕令法印", range: 2.05, damage: 16, cooldown: 29, color: "#8b4b22", special: "single", effect: "seal" }
+  "印": { name: "敕令法印", range: 2.05, damage: 14, cooldown: 31, color: "#8b4b22", special: "seal", effect: "seal" }
 };
 
 const GLYPH_PARTS = {
   "符": ["竹", "付"],
-  "香": ["禾", "日"],
+  "鏡": ["金", "竟"],
   "鈴": ["金", "令"],
   "劍": ["僉", "刂"],
   "印": ["爪", "卩"],
@@ -56,12 +56,12 @@ const ENEMY_TYPES = {
 };
 
 const CHOICES = [
-  { id: "bell", name: "鈴聲淨壇", copy: "所有法牌出手更快。", apply: state => { state.passives.speed *= 0.88; } },
+  { id: "bell", name: "鈴聲淨壇", copy: "所有鎮守出手更快。", apply: state => { state.passives.speed *= 0.88; } },
   { id: "clear_incense", name: "清香繞境", copy: "護陣距離小幅提高。", apply: state => { state.passives.range *= 1.12; } },
-  { id: "seal", name: "王爺敕令", copy: "所有法牌威力提高。", apply: state => { state.passives.damage *= 1.16; } },
-  { id: "incense", name: "添油香", copy: "請牌花費降低。", apply: state => { state.passives.discount += 3; } },
+  { id: "seal", name: "王爺敕令", copy: "所有鎮守威力提高。", apply: state => { state.passives.damage *= 1.16; } },
+  { id: "incense", name: "添油香", copy: "請令花費降低。", apply: state => { state.passives.discount += 3; } },
   { id: "guard", name: "鎮殿安爐", copy: "香爐恢復並提高耐久。", apply: state => { state.baseMaxHp += 2; state.baseHp = Math.min(state.baseMaxHp, state.baseHp + 4); } },
-  { id: "fate", name: "法器加持", copy: "立刻獲得一枚隨機二階法牌。", apply: state => { addBenchUnit(randomBaseUnit(2)); } }
+  { id: "fate", name: "法器加持", copy: "立刻獲得一件隨機二階法器。", apply: state => { addBenchUnit(randomBaseUnit(2)); } }
 ];
 
 const boardEl = document.getElementById("board");
@@ -74,6 +74,7 @@ const grainEl = document.getElementById("grain");
 const killsEl = document.getElementById("kills");
 const summonBtn = document.getElementById("summon-btn");
 const summonCostEl = document.getElementById("summon-cost");
+const discardBtn = document.getElementById("discard-zone");
 const battleLogEl = document.getElementById("battle-log");
 const restartBtn = document.getElementById("restart-btn");
 const choiceModal = document.getElementById("choice-modal");
@@ -142,6 +143,12 @@ function summonCost() {
   return Math.max(8, 18 - state.passives.discount);
 }
 
+function discardRefund(unit) {
+  if (!unit) return 0;
+  const base = unit.kind === "fragment" ? 8 : 5;
+  return Math.max(1, Math.round(base * Math.pow(1.65, unit.level - 1)));
+}
+
 function initBoard() {
   state.board = Array.from({ length: ROWS }, () => Array.from({ length: COLS }, () => null));
   boardEl.innerHTML = "";
@@ -205,7 +212,7 @@ function renderPairRings(activePairs) {
     const minY = Math.min(pair.leftY, pair.rightY);
     const maxY = Math.max(pair.leftY, pair.rightY);
     const ring = document.createElement("div");
-    ring.className = "pair-ring guangong-ring";
+    ring.className = `pair-ring guangong-ring ${minY === maxY ? "horizontal-ring" : "vertical-ring"}`;
     ring.style.left = `${(minX / COLS) * 100}%`;
     ring.style.top = `${(minY / ROWS) * 100}%`;
     ring.style.width = `${((maxX - minX + 1) / COLS) * 100}%`;
@@ -233,9 +240,9 @@ function renderBench() {
 function unitTitle(unit, linked) {
   if (unit.kind === "fragment") {
     const pair = GOD_PAIRS.find(item => item.chars.includes(unit.char));
-    return linked ? `${pair.title}已啟動` : `${pair.title}字牌：${unit.char}，需靠近${otherFragment(pair, unit.char)}`;
+    return linked ? `${pair.title}已啟動` : `${pair.title}神名字：${unit.char}，需靠近${otherFragment(pair, unit.char)}`;
   }
-  return BASE_UNITS[unit.char]?.name || `${unit.char}牌`;
+  return BASE_UNITS[unit.char]?.name || `${unit.char}法器`;
 }
 
 function fragmentInfo(unit) {
@@ -282,7 +289,7 @@ function renderEnemies() {
   state.enemies.forEach(enemy => {
     const pos = getEnemyPosition(enemy);
     const el = document.createElement("div");
-    el.className = `enemy enemy-${enemy.type} ${enemy.stun > 0 ? "stunned" : ""}`;
+    el.className = `enemy enemy-${enemy.type} ${enemy.stun > 0 ? "stunned" : ""} ${enemy.slow > 0 ? "slowed" : ""}`;
     el.title = ENEMY_TYPES[enemy.type].name;
     el.style.left = `${((pos.x + 0.5) / COLS) * 100}%`;
     el.style.top = `${((pos.y + 0.5) / ROWS) * 100}%`;
@@ -312,6 +319,7 @@ function updateHud() {
   killsEl.textContent = `${state.kills}`;
   summonCostEl.textContent = `${summonCost()}`;
   summonBtn.disabled = state.grain < summonCost() || state.bench.length >= BENCH_LIMIT || state.phase !== "play";
+  discardBtn.disabled = !state.selected || state.phase !== "play";
 }
 
 function log(message) {
@@ -365,6 +373,7 @@ function beginDrag(event, selection) {
     unit,
     ghost: createDragGhost(unit),
     targetCell: null,
+    targetDiscard: false,
     startX: event.clientX,
     startY: event.clientY,
     didMove: false
@@ -406,6 +415,16 @@ function updateDragGhost(clientX, clientY) {
 }
 
 function updateDropTarget(clientX, clientY) {
+  const discard = discardFromPoint(clientX, clientY);
+  if (dragState.targetDiscard === discard && discard) return;
+  if (discard) {
+    clearDropTarget();
+    dragState.targetDiscard = true;
+    discardBtn.classList.add("discard-hover");
+    return;
+  }
+  if (dragState.targetDiscard) clearDropTarget();
+
   const cell = cellFromPoint(clientX, clientY);
   if (dragState.targetCell === cell) return;
   clearDropTarget();
@@ -428,23 +447,44 @@ function updateDropTarget(clientX, clientY) {
 }
 
 function clearDropTarget() {
-  if (!dragState?.targetCell) return;
-  dragState.targetCell.classList.remove("drop-target", "drop-merge", "drop-blocked");
-  dragState.targetCell = null;
+  if (dragState?.targetCell) {
+    dragState.targetCell.classList.remove("drop-target", "drop-merge", "drop-blocked");
+    dragState.targetCell = null;
+  }
+  if (dragState?.targetDiscard) {
+    discardBtn.classList.remove("discard-hover");
+    dragState.targetDiscard = false;
+  }
 }
 
 function cellFromPoint(clientX, clientY) {
+  return elementFromPointWithoutGhost(clientX, clientY)?.closest?.(".cell") || null;
+}
+
+function discardFromPoint(clientX, clientY) {
+  return Boolean(elementFromPointWithoutGhost(clientX, clientY)?.closest?.("#discard-zone"));
+}
+
+function elementFromPointWithoutGhost(clientX, clientY) {
   const ghost = dragState?.ghost;
   const previousDisplay = ghost?.style.display;
   if (ghost) ghost.style.display = "none";
   const element = document.elementFromPoint(clientX, clientY);
   if (ghost) ghost.style.display = previousDisplay || "";
-  return element?.closest?.(".cell") || null;
+  return element;
 }
 
 function endDrag(event) {
   if (!dragState || event.pointerId !== dragState.pointerId) return;
   event.preventDefault();
+  if (discardFromPoint(event.clientX, event.clientY) && dragState.didMove) {
+    discardSelectedUnit();
+    state.suppressClickUntil = Date.now() + 300;
+    renderAll();
+    cleanupDrag();
+    return;
+  }
+
   const cell = cellFromPoint(event.clientX, event.clientY);
   if (cell && !isPath(Number(cell.dataset.x), Number(cell.dataset.y))) {
     moveSelectedToBoard(Number(cell.dataset.x), Number(cell.dataset.y));
@@ -498,6 +538,25 @@ function removeSelectedUnit() {
   }
 }
 
+function discardSelectedUnit() {
+  const unit = selectedUnit();
+  if (!unit || state.phase !== "play") return;
+  const refund = discardRefund(unit);
+  const pos = selectedUnitBoardPosition();
+  removeSelectedUnit();
+  state.grain += refund;
+  state.selected = null;
+  if (pos) {
+    floatText(pos.x, pos.y, `+${refund}`, "#d7a02f");
+  }
+  log(`${unit.char}已化去，回收 ${refund} 香火。`);
+}
+
+function selectedUnitBoardPosition() {
+  if (!state.selected || state.selected.source !== "board") return null;
+  return { x: state.selected.x, y: state.selected.y };
+}
+
 function moveSelectedToBoard(x, y) {
   const moving = selectedUnit();
   if (!moving) {
@@ -521,12 +580,13 @@ function moveSelectedToBoard(x, y) {
   }
 
   if (canMergeAt(moving, target, x, y)) {
+    const mergedKind = target.kind;
     removeSelectedUnit();
     state.board[y][x] = mergeUnits(target, moving);
     state.selected = null;
     mergeVfx(x, y, state.board[y][x]);
     announceNewGodPairs(activeBefore);
-    log("法牌相合，香火更旺。");
+    log(mergedKind === "fragment" ? "神名字升階，香火更旺。" : "法器相合，香火更旺。");
     return;
   }
 
@@ -544,7 +604,7 @@ function canMergeAt(a, b, targetX, targetY) {
   if (!a || !b) return false;
   if (a.char !== b.char || a.level !== b.level || a.kind !== b.kind) return false;
   if (a.kind === "base") return a.level < 3;
-  return a.level < 3 && activePairCellKeys().has(cellKey(targetX, targetY));
+  return activePairCellKeys().has(cellKey(targetX, targetY));
 }
 
 function mergeUnits(a, b) {
@@ -564,14 +624,14 @@ function summon() {
   state.grain -= cost;
   if (Math.random() < 0.35) {
     addBenchUnit(randomFragmentUnit());
-    log("神名字牌入列，靠近另一字才會啟動。");
+    log("神名字入列，靠近另一字才會啟動。");
     renderAll();
     return;
   }
 
   const level = Math.random() < 0.12 ? 2 : 1;
   addBenchUnit(randomBaseUnit(level));
-  log("新法牌已入列。");
+  log("新法器已入列。");
   renderAll();
 }
 
@@ -602,7 +662,8 @@ function spawnEnemy() {
     progress: 0,
     speed: data.speed,
     reward: data.reward,
-    stun: 0
+    stun: 0,
+    slow: 0
   });
 }
 
@@ -636,7 +697,9 @@ function moveEnemies() {
       continue;
     }
 
-    enemy.progress += (0.032 + state.wave * 0.0018) * enemy.speed;
+    const slowFactor = enemy.slow > 0 ? 0.58 : 1;
+    if (enemy.slow > 0) enemy.slow -= 1;
+    enemy.progress += (0.032 + state.wave * 0.0018) * enemy.speed * slowFactor;
     while (enemy.progress >= 1) {
       enemy.progress -= 1;
       enemy.pathIndex += 1;
@@ -745,6 +808,54 @@ function resolveAttack(def, x, y, targets, damage, level, glyphs = ["令"]) {
       });
       hitVfx(target.pos.x, target.pos.y, def.color, "ink-hit", damage);
     });
+    return;
+  }
+
+  if (def.special === "mirror") {
+    targets.slice(0, 1 + level).forEach((target, targetIndex) => {
+      const mirrorDamage = Math.round(damage * (targetIndex === 0 ? 1 : 0.72));
+      target.enemy.hp -= mirrorDamage;
+      beamFromTo(x, y, target.pos.x, target.pos.y, def.color, "mirror-beam");
+      glyphs.forEach((glyph, index) => {
+        shotFromTo(x, y, target.pos.x, target.pos.y, def.color, glyph, index, "mirror");
+      });
+      hitVfx(target.pos.x, target.pos.y, def.color, "ink-hit", mirrorDamage);
+    });
+    return;
+  }
+
+  if (def.special === "charm") {
+    targets.slice(0, 3 + level).forEach((target, targetIndex) => {
+      const charmDamage = Math.round(damage * (targetIndex === 0 ? 1 : 0.82));
+      target.enemy.hp -= charmDamage;
+      glyphs.forEach((glyph, index) => {
+        shotFromTo(x, y, target.pos.x, target.pos.y, def.color, glyph, index + targetIndex, "charm");
+      });
+      hitVfx(target.pos.x, target.pos.y, def.color, "ink-hit", charmDamage);
+    });
+    glyphScatter(x, y, glyphs, def.color);
+    return;
+  }
+
+  if (def.special === "bell") {
+    targets.slice(0, 2).forEach(target => {
+      target.enemy.hp -= damage;
+      target.enemy.slow = Math.max(target.enemy.slow || 0, 34 + level * 7);
+      shotFromTo(x, y, target.pos.x, target.pos.y, def.color, glyphs[0], 0, "bell");
+      wardVfx(target.pos.x, target.pos.y, def.color, "鈴");
+      hitVfx(target.pos.x, target.pos.y, def.color, "ink-hit", damage);
+    });
+    return;
+  }
+
+  if (def.special === "seal") {
+    primary.enemy.hp -= damage;
+    primary.enemy.stun = Math.max(primary.enemy.stun, 16 + level * 6);
+    glyphs.forEach((glyph, index) => {
+      shotFromTo(x, y, primary.pos.x, primary.pos.y, def.color, glyph, index, "seal");
+    });
+    wardVfx(primary.pos.x, primary.pos.y, def.color, "印");
+    hitVfx(primary.pos.x, primary.pos.y, def.color, "ink-hit", damage);
     return;
   }
 
@@ -1179,6 +1290,11 @@ function resetGame() {
 }
 
 summonBtn.addEventListener("click", summon);
+discardBtn.addEventListener("click", () => {
+  if (Date.now() < state.suppressClickUntil) return;
+  discardSelectedUnit();
+  renderAll();
+});
 restartBtn.addEventListener("click", resetGame);
 resultBtn.addEventListener("click", resetGame);
 

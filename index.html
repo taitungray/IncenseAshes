@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>廟埕守香</title>
-    <link rel="stylesheet" href="style.css?v=visual-polish-1">
+    <link rel="stylesheet" href="style.css?v=pair-ring-polish-1">
 </head>
 <body>
   <main id="game-shell">
@@ -41,10 +41,13 @@
       <div id="fx-layer" aria-hidden="true"></div>
     </section>
 
-    <section class="command-panel" aria-label="法牌">
+    <section class="command-panel" aria-label="法壇">
       <div class="bench-header">
-        <span>法牌</span>
-        <button id="summon-btn" type="button">請牌 <small id="summon-cost">18</small></button>
+        <span>法壇</span>
+        <div class="altar-actions">
+          <button id="discard-zone" type="button" aria-label="化去" title="化去"><span>化去</span></button>
+          <button id="summon-btn" type="button">請令 <small id="summon-cost">18</small></button>
+        </div>
       </div>
       <div id="bench"></div>
     </section>
@@ -52,14 +55,14 @@
     <section class="codex-panel" aria-label="神明譜">
       <div class="codex-title">神明譜</div>
       <div class="recipe-grid">
-        <span>符 香 鈴 劍 印</span>
+        <span>符 鏡 鈴 劍 印</span>
         <span>媽/祖隨機出</span>
         <span>關/公隨機出</span>
         <span>城/隍隨機出</span>
         <span>觀/音隨機出</span>
         <span>王/爺隨機出</span>
       </div>
-      <p id="battle-log">廟埕安靜，法牌待請。</p>
+      <p id="battle-log">廟埕安靜，壇前待請。</p>
     </section>
   </main>
 
@@ -80,6 +83,6 @@
     </div>
   </div>
 
-    <script src="game.js?v=visual-polish-1"></script>
+    <script src="game.js?v=pair-ring-polish-1"></script>
 </body>
 </html>
