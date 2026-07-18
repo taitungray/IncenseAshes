@@ -115,7 +115,14 @@
 IncenseAshes/
   index.html
   style.css
-  game.js
+  js/
+    config.js
+    state.js
+    render.js
+    input.js
+    flow.js
+    effects.js
+    app.js
   assets/
     temple-backdrop.webp
     temple-board.webp
@@ -138,20 +145,17 @@ IncenseAshes/
 
 負責整體視覺、棋盤、法壇、字體、敵人、血條、攻擊特效、部首動畫、化去圖示與神明組合框。
 
-### `game.js`
+### `js/`
 
-負責遊戲邏輯：
+拆分後的遊戲邏輯：
 
-- 棋盤初始化
-- 抽字
-- 拖曳
-- 放置
-- 合成
-- 化去回收
-- 敵人生成與移動
-- 法器攻擊
-- 神明組合攻擊
-- 波次與勝敗
+- `config.js`：棋盤大小、路徑、法器、神名字、敵人、加持資料。
+- `state.js`：DOM 參照、遊戲狀態、拖曳狀態。
+- `render.js`：棋盤、法壇、敵人、HUD、神明組合框渲染。
+- `input.js`：點選、拖曳、放置、合成、化去回收。
+- `flow.js`：請令、波次、敵人生成與移動、法器攻擊、神明組合攻擊。
+- `effects.js`：飛字、部首、斬擊、鎮字、光束、浮字等視覺特效。
+- `app.js`：勝敗、重開、事件綁定與遊戲啟動。
 
 ## 目前版本重點
 
@@ -163,6 +167,7 @@ IncenseAshes/
 - 鈴改為緩速，不暈眩。
 - 符改為大範圍多目標攻擊。
 - 關公組合框已改成朱印式連結框。
+- 原本單一 `game.js` 已拆分為 `js/` 目錄中的多個檔案。
 
 ## 後續可優化項目
 
