@@ -2508,3 +2508,569 @@ body.dragging-card {
 .unit.attacking .radical-1 {
   animation-delay: 45ms !important;
 }
+
+.unit.artifact:not(.attacking) .whole-glyph,
+.unit.artifact:not(.attacking) .artifact-glyph {
+  animation: artifactGlyphWalk 1.16s ease-in-out infinite !important;
+  animation-delay: var(--glyph-delay, 0ms) !important;
+  transform-origin: 50% 78%;
+  will-change: transform;
+}
+
+.unit.artifact .artifact-glyph {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  position: relative;
+  overflow: visible;
+  color: #17110c !important;
+}
+
+.unit.artifact .artifact-part {
+  position: absolute;
+  display: inline-block;
+  font-family: "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+  font-weight: 900;
+  line-height: 1;
+  opacity: 0.96;
+  color: inherit !important;
+  text-shadow: none !important;
+  transform-origin: 50% 75%;
+}
+
+.unit.artifact:not(.attacking) .artifact-part {
+  animation: artifactRadicalStep 1.16s ease-in-out infinite !important;
+  animation-delay: var(--glyph-delay, 0ms) !important;
+}
+
+.unit.artifact .artifact-part-0 {
+  --part-angle: var(--part-a, -4deg);
+  left: -0.06em;
+  top: 0.02em;
+  font-size: 0.58em;
+  z-index: 2;
+}
+
+.unit.artifact .artifact-part-1 {
+  --part-angle: var(--part-b, 5deg);
+  right: -0.02em;
+  bottom: 0.02em;
+  font-size: 0.82em;
+  z-index: 1;
+}
+
+.unit.artifact:not(.attacking) .artifact-part-1 {
+  animation-delay: calc(var(--glyph-delay, 0ms) - 160ms) !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-符 .artifact-part-0 {
+  animation-name: artifactWritingSettle !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-符 .artifact-part-1 {
+  animation-name: artifactTopFlick !important;
+}
+
+.unit.artifact .artifact-glyph-符 {
+  color: #17110c !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-符 {
+  animation: artifactTalismanWalk 1.08s ease-in-out infinite !important;
+  animation-delay: var(--glyph-delay, 0ms) !important;
+}
+
+.unit.artifact .artifact-glyph-符 .artifact-part-0 {
+  left: 0.18em;
+  top: 0.18em;
+  font-size: 0.9em;
+  transform-origin: 50% 72%;
+}
+
+.unit.artifact .artifact-glyph-符 .artifact-part-1 {
+  left: 0.16em;
+  right: auto;
+  top: -0.14em;
+  bottom: auto;
+  font-size: 0.62em;
+  transform-origin: 50% 82%;
+}
+
+.unit.artifact .artifact-glyph-鏡 {
+  color: #17110c !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-鏡 {
+  animation: artifactMirrorPoise 1.32s ease-in-out infinite !important;
+  animation-delay: var(--glyph-delay, 0ms) !important;
+}
+
+.unit.artifact .artifact-glyph-鈴 {
+  color: #17110c !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-鈴 {
+  animation: artifactBellSway 1.18s ease-in-out infinite !important;
+  animation-delay: var(--glyph-delay, 0ms) !important;
+}
+
+.unit.artifact .artifact-glyph-鏡 .artifact-part-0,
+.unit.artifact .artifact-glyph-鈴 .artifact-part-0 {
+  left: 0.24em;
+  top: 0.02em;
+  font-size: 0.94em;
+  transform-origin: 46% 74%;
+}
+
+.unit.artifact .artifact-glyph-鏡 .artifact-part-1,
+.unit.artifact .artifact-glyph-鈴 .artifact-part-1 {
+  left: -0.12em;
+  right: auto;
+  top: 0.12em;
+  bottom: auto;
+  font-size: 0.68em;
+  transform-origin: 70% 72%;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-鏡 .artifact-part-0 {
+  animation-name: artifactMirrorTurn !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-鈴 .artifact-part-0 {
+  animation-name: artifactBellPartSway !important;
+}
+
+.unit.artifact .artifact-glyph-劍 .artifact-part-0 {
+  left: -0.04em;
+  bottom: 0.02em;
+  font-size: 0.78em;
+}
+
+.unit.artifact .artifact-glyph-劍 .artifact-part-1 {
+  right: -0.13em;
+  top: 0.08em;
+  font-size: 0.62em;
+}
+
+.unit.artifact .artifact-glyph-印 {
+  color: #17110c !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-印 {
+  animation: artifactSealStamp 1.22s ease-in-out infinite !important;
+  animation-delay: var(--glyph-delay, 0ms) !important;
+}
+
+.unit.artifact .artifact-glyph-印 .artifact-part-0 {
+  left: 0.08em;
+  top: 0.02em;
+  font-size: 0.98em;
+  transform-origin: 54% 78%;
+}
+
+.unit.artifact .artifact-glyph-印 .artifact-part-1 {
+  left: 0.38em;
+  right: auto;
+  top: 0.23em;
+  bottom: auto;
+  font-size: 0.56em;
+  transform-origin: 50% 70%;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-印 .artifact-part-0 {
+  animation-name: artifactSealLeftPress !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-印 .artifact-part-1 {
+  animation-name: artifactSealMiddlePress !important;
+}
+
+.unit.artifact.attacking .artifact-glyph {
+  animation: glyphAttack 460ms cubic-bezier(0.12, 1.75, 0.18, 1) both !important;
+}
+
+.unit.artifact.attacking .artifact-part {
+  opacity: 0.96 !important;
+  animation: radicalAttack 460ms cubic-bezier(0.12, 1.75, 0.18, 1) both !important;
+}
+
+.unit.artifact.attacking .artifact-part-1 {
+  animation-delay: 45ms !important;
+}
+
+
+.bench-card:not(.fragment) .whole-glyph,
+.bench-card:not(.fragment) .split-glyph,
+.bench-card:not(.fragment) .glyph-core,
+.bench-card:not(.fragment) .radical,
+.bench-card:not(.fragment) .artifact-glyph,
+.bench-card:not(.fragment) .artifact-part,
+.drag-ghost:not(.fragment) .whole-glyph {
+  animation: none !important;
+  transform: none !important;
+}
+
+@keyframes artifactGlyphWalk {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--tilt, 0deg)) scale(1);
+  }
+  24% {
+    transform: translate(-0.45px, -0.65px) rotate(calc(var(--tilt, 0deg) - 0.55deg)) scale(1.008, 0.996);
+  }
+  52% {
+    transform: translate(0.5px, 0.12px) rotate(calc(var(--tilt, 0deg) + 0.45deg)) scale(0.997, 1.008);
+  }
+  76% {
+    transform: translate(-0.18px, 0.32px) rotate(calc(var(--tilt, 0deg) + 0.28deg)) scale(1.003);
+  }
+}
+
+@keyframes artifactBrushCharm {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--tilt, 0deg) * 0.08)) scale(1);
+  }
+  32% {
+    transform: translate(-0.18px, -0.5px) rotate(calc(var(--tilt, 0deg) * 0.08 + 0.8deg)) scale(1.012, 0.992);
+  }
+  64% {
+    transform: translate(0.16px, 0.3px) rotate(calc(var(--tilt, 0deg) * 0.08 - 0.35deg)) scale(0.996, 1.01);
+  }
+}
+
+@keyframes artifactMirrorTilt {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--tilt, 0deg) * 0.08)) scale(1);
+  }
+  46% {
+    transform: translate(0.32px, -0.24px) rotate(calc(var(--tilt, 0deg) * 0.08 + 1.3deg)) scale(1.006);
+  }
+}
+
+@keyframes artifactBellRock {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--tilt, 0deg) * 0.08 - 0.8deg)) scale(1);
+  }
+  36% {
+    transform: translate(-0.28px, -0.18px) rotate(calc(var(--tilt, 0deg) * 0.08 + 1.8deg)) scale(1.006);
+  }
+  72% {
+    transform: translate(0.24px, 0.18px) rotate(calc(var(--tilt, 0deg) * 0.08 - 1.5deg)) scale(0.998, 1.006);
+  }
+}
+
+@keyframes artifactSealDrop {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--tilt, 0deg) * 0.05)) scale(1);
+  }
+  34% {
+    transform: translate(0, -0.42px) rotate(calc(var(--tilt, 0deg) * 0.05 + 0.25deg)) scale(1.004);
+  }
+  54% {
+    transform: translate(0, 0.5px) rotate(calc(var(--tilt, 0deg) * 0.05)) scale(1.012, 0.982);
+  }
+}
+
+@keyframes artifactTalismanWalk {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--tilt, 0deg) - 1deg)) scale(1);
+  }
+  35% {
+    transform: translate(-0.35px, -0.8px) rotate(calc(var(--tilt, 0deg) + 1.1deg)) scale(1.004, 1.012);
+  }
+  68% {
+    transform: translate(0.32px, 0.28px) rotate(calc(var(--tilt, 0deg) - 0.4deg)) scale(0.998, 1.004);
+  }
+}
+
+@keyframes artifactMirrorPoise {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--tilt, 0deg)) scale(1);
+  }
+  45% {
+    transform: translate(0.28px, -0.48px) rotate(calc(var(--tilt, 0deg) + 1.6deg)) scale(1.01);
+  }
+  72% {
+    transform: translate(-0.22px, 0.2px) rotate(calc(var(--tilt, 0deg) - 0.7deg)) scale(0.998);
+  }
+}
+
+@keyframes artifactBellSway {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--tilt, 0deg) - 1.3deg)) scale(1);
+  }
+  38% {
+    transform: translate(-0.32px, -0.42px) rotate(calc(var(--tilt, 0deg) + 2.3deg)) scale(1.006);
+  }
+  72% {
+    transform: translate(0.34px, 0.2px) rotate(calc(var(--tilt, 0deg) - 2deg)) scale(0.998, 1.006);
+  }
+}
+
+@keyframes artifactSealStamp {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--tilt, 0deg)) scale(1);
+  }
+  34% {
+    transform: translate(0, -0.72px) rotate(calc(var(--tilt, 0deg) + 0.5deg)) scale(1.008);
+  }
+  58% {
+    transform: translate(0, 0.4px) rotate(var(--tilt, 0deg)) scale(1.012, 0.988);
+  }
+}
+
+@keyframes artifactRadicalStep {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  35% {
+    transform: translate(calc(var(--enemy-step, 1) * -0.45px), -0.42px) rotate(calc(var(--part-angle, 0deg) - 1.25deg)) scale(1.02, 0.99);
+  }
+  68% {
+    transform: translate(calc(var(--enemy-step, 1) * 0.42px), 0.34px) rotate(calc(var(--part-angle, 0deg) + 1.35deg)) scale(0.995, 1.02);
+  }
+}
+
+@keyframes artifactSealWholePress {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--tilt, 0deg) * 0.08)) scale(1);
+  }
+  46% {
+    transform: translate(0, 0.48px) rotate(calc(var(--tilt, 0deg) * 0.08)) scale(1.012, 0.986);
+  }
+}
+
+@keyframes artifactSealLeftPress {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--part-angle, 0deg) - 3deg)) scale(1);
+  }
+  46% {
+    transform: translate(-0.2px, 0.36px) rotate(calc(var(--part-angle, 0deg) - 2deg)) scale(1.012, 0.986);
+  }
+}
+
+@keyframes artifactSealMiddlePress {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--part-angle, 0deg) * 0.3)) scale(1);
+  }
+  46% {
+    transform: translate(0, 0.24px) rotate(calc(var(--part-angle, 0deg) * 0.2)) scale(1.03, 0.96);
+  }
+}
+
+@keyframes artifactTopFlick {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  42% {
+    transform: translate(-0.24px, -0.56px) rotate(calc(var(--part-angle, 0deg) + 1.8deg)) scale(1.03, 0.98);
+  }
+}
+
+@keyframes artifactWritingSettle {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  48% {
+    transform: translate(0.22px, 0.38px) rotate(calc(var(--part-angle, 0deg) - 1deg)) scale(0.99, 1.025);
+  }
+}
+
+@keyframes artifactMirrorTurn {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  45% {
+    transform: translate(0.36px, -0.22px) rotate(calc(var(--part-angle, 0deg) + 2.4deg)) scale(1.018);
+  }
+}
+
+@keyframes artifactBellPartSway {
+  0%, 100% {
+    transform: translate(0, 0) rotate(calc(var(--part-angle, 0deg) - 1deg)) scale(1);
+  }
+  38% {
+    transform: translate(-0.28px, -0.28px) rotate(calc(var(--part-angle, 0deg) + 3.2deg)) scale(1.018, 0.992);
+  }
+  74% {
+    transform: translate(0.24px, 0.18px) rotate(calc(var(--part-angle, 0deg) - 2.6deg)) scale(0.995, 1.018);
+  }
+}
+
+@keyframes artifactSealTopPress {
+  0%, 100% {
+    transform: translate(0, -0.12px) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  46% {
+    transform: translate(0, 0.56px) rotate(calc(var(--part-angle, 0deg) + 0.6deg)) scale(1.015, 0.975);
+  }
+}
+
+@keyframes artifactSealBaseHold {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  46% {
+    transform: translate(0, 0.16px) rotate(calc(var(--part-angle, 0deg) - 0.4deg)) scale(1.02, 0.985);
+  }
+}
+
+.unit.artifact .artifact-glyph-符,
+.unit.artifact .artifact-glyph-鏡,
+.unit.artifact .artifact-glyph-鈴,
+.unit.artifact .artifact-glyph-印 {
+  width: 1.08em;
+  height: 1.08em;
+  color: #17110c !important;
+}
+
+.unit.artifact .artifact-glyph-符 .artifact-part,
+.unit.artifact .artifact-glyph-鏡 .artifact-part,
+.unit.artifact .artifact-glyph-鈴 .artifact-part,
+.unit.artifact .artifact-glyph-印 .artifact-part {
+  color: inherit !important;
+  text-shadow: none !important;
+  opacity: 0.98;
+}
+
+.unit.artifact .artifact-glyph-符 .artifact-part-0 {
+  left: 0.17em;
+  top: -0.13em;
+  font-size: 0.64em;
+  transform-origin: 50% 82%;
+}
+
+.unit.artifact .artifact-glyph-符 .artifact-part-1 {
+  left: 0.16em;
+  right: auto;
+  top: 0.32em;
+  bottom: auto;
+  font-size: 0.62em;
+  transform-origin: 56% 70%;
+}
+
+.unit.artifact .artifact-glyph-符 .artifact-part-2 {
+  left: 0.39em;
+  right: auto;
+  top: 0.27em;
+  bottom: auto;
+  font-size: 0.74em;
+  transform-origin: 48% 70%;
+  z-index: 2;
+}
+
+.unit.artifact .artifact-glyph-鏡 .artifact-part-0,
+.unit.artifact .artifact-glyph-鈴 .artifact-part-0 {
+  left: -0.04em;
+  top: 0.16em;
+  font-size: 0.66em;
+  transform-origin: 72% 72%;
+}
+
+.unit.artifact .artifact-glyph-鏡 .artifact-part-1 {
+  left: 0.33em;
+  right: auto;
+  top: -0.03em;
+  bottom: auto;
+  font-size: 0.68em;
+  transform-origin: 44% 72%;
+}
+
+.unit.artifact .artifact-glyph-鏡 .artifact-part-2 {
+  left: 0.48em;
+  right: auto;
+  top: 0.43em;
+  bottom: auto;
+  font-size: 0.56em;
+  transform-origin: 44% 72%;
+}
+
+.unit.artifact .artifact-glyph-鈴 .artifact-part-1 {
+  left: 0.39em;
+  right: auto;
+  top: 0.02em;
+  bottom: auto;
+  font-size: 0.58em;
+  transform-origin: 48% 72%;
+}
+
+.unit.artifact .artifact-glyph-鈴 .artifact-part-2 {
+  left: 0.47em;
+  right: auto;
+  top: 0.36em;
+  bottom: auto;
+  font-size: 0.66em;
+  transform-origin: 44% 70%;
+}
+
+.unit.artifact .artifact-glyph-印 .artifact-part-0 {
+  left: 0.15em;
+  top: 0.04em;
+  font-size: 0.78em;
+  transform-origin: 74% 76%;
+}
+
+.unit.artifact .artifact-glyph-印 .artifact-part-1 {
+  left: 0.31em;
+  right: auto;
+  top: 0.14em;
+  bottom: auto;
+  font-size: 0.62em;
+  transform-origin: 50% 70%;
+}
+
+.unit.artifact .artifact-glyph-印 .artifact-part-2 {
+  left: 0.49em;
+  right: auto;
+  top: 0.24em;
+  bottom: auto;
+  font-size: 0.74em;
+  transform-origin: 42% 72%;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-符 .artifact-part-0,
+.unit.artifact:not(.attacking) .artifact-glyph-鏡 .artifact-part-0,
+.unit.artifact:not(.attacking) .artifact-glyph-鈴 .artifact-part-0,
+.unit.artifact:not(.attacking) .artifact-glyph-印 .artifact-part-0 {
+  animation-name: artifactPartAnchor !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-符 .artifact-part-1,
+.unit.artifact:not(.attacking) .artifact-glyph-鏡 .artifact-part-1,
+.unit.artifact:not(.attacking) .artifact-glyph-鈴 .artifact-part-1,
+.unit.artifact:not(.attacking) .artifact-glyph-印 .artifact-part-1 {
+  animation-name: artifactPartLift !important;
+}
+
+.unit.artifact:not(.attacking) .artifact-glyph-符 .artifact-part-2,
+.unit.artifact:not(.attacking) .artifact-glyph-鏡 .artifact-part-2,
+.unit.artifact:not(.attacking) .artifact-glyph-鈴 .artifact-part-2,
+.unit.artifact:not(.attacking) .artifact-glyph-印 .artifact-part-2 {
+  animation-name: artifactPartSettle !important;
+}
+
+@keyframes artifactPartAnchor {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  48% {
+    transform: translate(-0.16px, -0.18px) rotate(calc(var(--part-angle, 0deg) - 0.6deg)) scale(1.006);
+  }
+}
+
+@keyframes artifactPartLift {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  42% {
+    transform: translate(0.14px, -0.34px) rotate(calc(var(--part-angle, 0deg) + 0.9deg)) scale(1.01, 0.992);
+  }
+}
+
+@keyframes artifactPartSettle {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  52% {
+    transform: translate(0.2px, 0.26px) rotate(calc(var(--part-angle, 0deg) - 0.7deg)) scale(0.995, 1.01);
+  }
+}

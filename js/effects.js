@@ -48,6 +48,7 @@ function unitColor(unit) {
 }
 
 function glyphParts(glyph) {
+  if (["符", "鏡", "鈴", "印"].includes(glyph)) return [glyph];
   return GLYPH_PARTS[glyph] || [glyph];
 }
 
