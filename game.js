@@ -35,7 +35,11 @@ const GLYPH_PARTS = {
   "觀": ["雚", "見"],
   "音": ["立", "日"],
   "王": ["一", "土"],
-  "爺": ["父", "耶"]
+  "爺": ["父", "耶"],
+  "怪": ["忄", "圣"],
+  "鬼": ["丿", "鬼"],
+  "妖": ["女", "夭"],
+  "魔": ["麻", "鬼"]
 };
 
 const GOD_PAIRS = [
@@ -285,30 +289,72 @@ function applyGlyphMotion(el, seed) {
 }
 
 function renderEnemies() {
-  enemyLayer.innerHTML = "";
+  const currentIds = new Set();
+  
   state.enemies.forEach(enemy => {
+    currentIds.add(enemy.id);
     const pos = getEnemyPosition(enemy);
-    const el = document.createElement("div");
+    
+    let el = document.getElementById(`enemy-${enemy.id}`);
+    
+    if (!el) {
+      el = document.createElement("div");
+      el.id = `enemy-${enemy.id}`;
+      el.title = ENEMY_TYPES[enemy.type].name;
+      
+      const stepSeed = enemy.id.charCodeAt(enemy.id.length - 1) + enemy.pathIndex;
+      el.style.setProperty("--enemy-step", `${stepSeed % 2 === 0 ? -1 : 1}`);
+      el.style.setProperty("--enemy-delay", `${-(stepSeed % 7) * 70}ms`);
+  
+      const shadow = document.createElement("div");
+      shadow.className = "enemy-shadow";
+      el.appendChild(shadow);
+  
+      const glyphContainer = document.createElement("div");
+      glyphContainer.className = "enemy-glyph-container";
+      
+      let bodyChar = enemy.type;
+      let weaponChar = "";
+      if (enemy.type === "怪") { bodyChar = "圣"; weaponChar = "忄"; }
+      else if (enemy.type === "妖") { bodyChar = "夭"; weaponChar = "女"; }
+      else if (enemy.type === "魔") { bodyChar = "魔"; weaponChar = ""; }
+      
+      const glyph = document.createElement("span");
+      glyph.className = "enemy-glyph";
+      glyph.innerHTML = glyphHtml(bodyChar);
+      glyphContainer.appendChild(glyph);
+  
+      if (weaponChar) {
+        const weapon = document.createElement("span");
+        weapon.className = "enemy-weapon";
+        weapon.textContent = weaponChar;
+        glyphContainer.appendChild(weapon);
+      }
+  
+      el.appendChild(glyphContainer);
+  
+      const hpLine = document.createElement("div");
+      hpLine.className = "hp-line";
+      const hpFill = document.createElement("i");
+      hpFill.className = "hp-fill";
+      hpLine.appendChild(hpFill);
+      el.appendChild(hpLine);
+      
+      enemyLayer.appendChild(el);
+    }
+    
     el.className = `enemy enemy-${enemy.type} ${enemy.stun > 0 ? "stunned" : ""} ${enemy.slow > 0 ? "slowed" : ""}`;
-    el.title = ENEMY_TYPES[enemy.type].name;
     el.style.left = `${((pos.x + 0.5) / COLS) * 100}%`;
     el.style.top = `${((pos.y + 0.5) / ROWS) * 100}%`;
-    const stepSeed = enemy.id.charCodeAt(enemy.id.length - 1) + enemy.pathIndex;
-    el.style.setProperty("--enemy-step", `${stepSeed % 2 === 0 ? -1 : 1}`);
-    el.style.setProperty("--enemy-delay", `${-(stepSeed % 7) * 70}ms`);
+    
+    const hpFill = el.querySelector(".hp-fill");
+    if (hpFill) hpFill.style.width = `${Math.max(0, (enemy.hp / enemy.maxHp) * 100)}%`;
+  });
 
-    const glyph = document.createElement("span");
-    glyph.className = "enemy-glyph";
-    glyph.textContent = enemy.type;
-    el.appendChild(glyph);
-
-    const hpLine = document.createElement("div");
-    hpLine.className = "hp-line";
-    const hpFill = document.createElement("i");
-    hpFill.style.width = `${Math.max(0, (enemy.hp / enemy.maxHp) * 100)}%`;
-    hpLine.appendChild(hpFill);
-    el.appendChild(hpLine);
-    enemyLayer.appendChild(el);
+  Array.from(enemyLayer.children).forEach(child => {
+    if (!currentIds.has(child.id.replace("enemy-", ""))) {
+      child.remove();
+    }
   });
 }
 
@@ -585,6 +631,7 @@ function moveSelectedToBoard(x, y) {
     state.board[y][x] = mergeUnits(target, moving);
     state.selected = null;
     mergeVfx(x, y, state.board[y][x]);
+    triggerScreenShake("medium");
     announceNewGodPairs(activeBefore);
     log(mergedKind === "fragment" ? "神名字升階，香火更旺。" : "法器相合，香火更旺。");
     return;
@@ -603,7 +650,7 @@ function moveSelectedToBoard(x, y) {
 function canMergeAt(a, b, targetX, targetY) {
   if (!a || !b) return false;
   if (a.char !== b.char || a.level !== b.level || a.kind !== b.kind) return false;
-  if (a.kind === "base") return a.level < 3;
+  if (a.kind === "base") return a.level < 5;
   return activePairCellKeys().has(cellKey(targetX, targetY));
 }
 
@@ -648,8 +695,9 @@ function spawnEnemy() {
   let type = "怪";
   const roll = Math.random();
   if (state.wave % 5 === 0 && state.spawnLeft === 1) type = "魔";
-  else if (roll > 0.78) type = "妖";
-  else if (roll > 0.52) type = "鬼";
+  else if (roll > 0.80) type = "魔";
+  else if (roll > 0.60) type = "妖";
+  else if (roll > 0.35) type = "鬼";
 
   const data = ENEMY_TYPES[type];
   const hp = Math.round(data.hp * (1 + state.wave * 0.22));
@@ -707,6 +755,7 @@ function moveEnemies() {
         state.baseHp -= enemy.type === "魔" ? 3 : 1;
         state.enemies.splice(i, 1);
         burstAt(PATH[PATH.length - 1].x, PATH[PATH.length - 1].y, "#c53424", 1.2);
+        triggerScreenShake(enemy.type === "魔" ? "heavy" : "light");
         if (state.baseHp <= 0) endGame(false);
         break;
       }
@@ -758,6 +807,7 @@ function attackWithGodPairs() {
     pulseUnitAt(pair.rightX, pair.rightY, targets[0].pos);
     resolveAttack(pair.def, pair.cx, pair.cy, targets, damage, pair.level, [pair.left.char, pair.right.char]);
     godAttackVfx(pair, targets[0].pos);
+    triggerScreenShake("heavy");
     pair.left.cooldown = Math.max(8, Math.floor(pair.def.cooldown * state.passives.speed));
   });
 }
@@ -1248,6 +1298,15 @@ function beamFromTo(sx, sy, tx, ty, color, extraClass = "") {
   beam.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
   fxLayer.appendChild(beam);
   setTimeout(() => beam.remove(), 260);
+}
+
+function triggerScreenShake(intensity = "light") {
+  const shell = document.getElementById("game-shell");
+  if (!shell) return;
+  shell.classList.remove("shake-light", "shake-medium", "shake-heavy");
+  void shell.offsetWidth; // trigger reflow
+  shell.classList.add(`shake-${intensity}`);
+  setTimeout(() => shell.classList.remove(`shake-${intensity}`), 400);
 }
 
 function endGame(win) {

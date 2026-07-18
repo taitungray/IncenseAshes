@@ -448,7 +448,7 @@ body.dragging-card {
   will-change: transform, filter;
   font-family: "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
   font-weight: 900;
-  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.72), 0 2px 2px rgba(43, 23, 18, 0.14);
+  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.8), 0 2px 4px rgba(43, 23, 18, 0.5);
 }
 
 .unit .whole-glyph,
@@ -463,9 +463,8 @@ body.dragging-card {
   position: absolute;
   inset: 0;
   color: currentColor;
-  opacity: 0.24;
+  opacity: 0.15;
   transform: translate(1px, 1px) rotate(calc(var(--tilt, 0deg) * -0.5));
-  filter: blur(0.4px);
   pointer-events: none;
   animation: inkEcho 780ms steps(2, end) infinite;
   animation-delay: var(--glyph-delay, 0ms);
@@ -499,7 +498,6 @@ body.dragging-card {
   color: currentColor;
   opacity: 0.15;
   transform: translate(1px, 1px);
-  filter: blur(0.35px);
   pointer-events: none;
   animation: inkEcho 680ms steps(2, end) infinite;
   animation-delay: var(--glyph-delay, 0ms);
@@ -1030,12 +1028,15 @@ body.dragging-card {
   0% {
     transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
   }
-  22% {
-    transform: translate(calc(var(--attack-dx) * 0.12 - 2px), calc(var(--attack-dy) * 0.12 - 3px)) scale(1.2, 0.88) rotate(calc(var(--part-angle, 0deg) - 12deg));
-    filter: drop-shadow(0 0 12px currentColor);
+  15% {
+    transform: translate(calc(var(--attack-dx) * -0.15), calc(var(--attack-dy) * -0.15)) scale(0.9, 1.1) rotate(calc(var(--part-angle, 0deg) + 15deg));
   }
-  46% {
-    transform: translate(calc(var(--attack-dx) * 0.08 + 2px), calc(var(--attack-dy) * 0.08 + 2px)) scale(0.9, 1.12) rotate(calc(var(--part-angle, 0deg) + 9deg));
+  35% {
+    transform: translate(calc(var(--attack-dx) * 0.35 + 4px), calc(var(--attack-dy) * 0.35 - 4px)) scale(1.35, 0.75) rotate(calc(var(--part-angle, 0deg) - 25deg));
+    filter: drop-shadow(0 0 24px currentColor) brightness(1.5);
+  }
+  60% {
+    transform: translate(calc(var(--attack-dx) * 0.1 - 2px), calc(var(--attack-dy) * 0.1 + 2px)) scale(0.95, 1.08) rotate(calc(var(--part-angle, 0deg) + 12deg));
   }
   100% {
     transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
@@ -1073,17 +1074,53 @@ body.dragging-card {
     transform: translateY(0) scale(1);
     filter: brightness(1);
   }
-  22% {
-    transform: translate(calc(var(--attack-dx) * 0.2), calc(var(--attack-dy) * 0.2)) scale(1.08, 0.96) rotate(-2deg);
-    filter: brightness(1.65) drop-shadow(0 0 14px currentColor);
+  15% {
+    transform: translate(calc(var(--attack-dx) * -0.1), calc(var(--attack-dy) * -0.1)) scale(0.95, 1.05) rotate(2deg);
   }
-  46% {
-    transform: translate(calc(var(--attack-dx) * -0.08), 2px) scale(0.96, 1.06) rotate(1.5deg);
+  30% {
+    transform: translate(calc(var(--attack-dx) * 0.25), calc(var(--attack-dy) * 0.25)) scale(1.15, 0.9) rotate(-4deg);
+    filter: brightness(2) drop-shadow(0 0 18px currentColor);
+  }
+  55% {
+    transform: translate(calc(var(--attack-dx) * -0.12), 3px) scale(0.95, 1.08) rotate(2.5deg);
   }
   100% {
     transform: translateY(0) scale(1);
     filter: brightness(1);
   }
+}
+
+.shake-light {
+  animation: screenShakeLight 400ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.shake-medium {
+  animation: screenShakeMedium 400ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.shake-heavy {
+  animation: screenShakeHeavy 400ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes screenShakeLight {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(1px, -1px, 0); }
+  30%, 50%, 70% { transform: translate3d(-2px, 1px, 0); }
+  40%, 60% { transform: translate3d(2px, 0, 0); }
+}
+
+@keyframes screenShakeMedium {
+  10%, 90% { transform: translate3d(-2px, -1px, 0); }
+  20%, 80% { transform: translate3d(3px, 1px, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 2px, 0); }
+  40%, 60% { transform: translate3d(4px, -2px, 0); }
+}
+
+@keyframes screenShakeHeavy {
+  10%, 90% { transform: translate3d(-4px, -2px, 0) scale(1.01); filter: brightness(1.05); }
+  20%, 80% { transform: translate3d(5px, 3px, 0) scale(1.02); }
+  30%, 50%, 70% { transform: translate3d(-7px, 5px, 0) scale(1.03); filter: brightness(1.1); }
+  40%, 60% { transform: translate3d(7px, -4px, 0) scale(1.01); }
 }
 
 .unit small,
@@ -1142,74 +1179,196 @@ body.dragging-card {
   font-size: 1.46rem;
   box-shadow: none;
   font-family: "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+  transition: left 35ms linear, top 35ms linear;
+}
+
+.enemy-glyph-container {
+  display: inline-block;
+  position: relative;
+  transform-origin: 50% 85%;
+  animation: enemyWalk 920ms cubic-bezier(0.3, 0, 0.2, 1) infinite;
+  animation-delay: var(--enemy-delay, 0ms);
 }
 
 .enemy-glyph {
   display: inline-block;
-  transform-origin: 50% 85%;
   filter: none;
-  text-shadow: 0 1px 0 rgba(255, 244, 218, 0.72), 0 2px 2px rgba(43, 23, 18, 0.14);
-  animation: enemyWalk 920ms ease-in-out infinite;
+  font-family: "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+  font-weight: 900;
+  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.6), 0 2px 3px rgba(43, 23, 18, 0.4);
+}
+
+.enemy-weapon {
+  position: absolute;
+  font-family: "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+  font-weight: 900;
+  font-size: 0.65em;
+  opacity: 0.9;
+  z-index: 10;
+}
+
+.enemy-shadow {
+  position: absolute;
+  width: 24px;
+  height: 8px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: rgba(20, 10, 5, 0.6);
+  filter: blur(2px);
+  animation: enemyShadow 920ms cubic-bezier(0.3, 0, 0.2, 1) infinite;
   animation-delay: var(--enemy-delay, 0ms);
+  z-index: -1;
 }
 
 .enemy-怪 {
   color: #352016;
 }
 
+.enemy-怪 .enemy-weapon {
+  left: -0.4em;
+  top: 0.2em;
+  transform-origin: bottom center;
+  animation: enemyWeaponSwing 920ms ease-in-out infinite;
+  animation-delay: var(--enemy-delay, 0ms);
+}
+
+@keyframes enemyWeaponSwing {
+  0%, 100% { transform: rotate(-10deg) scale(1.1) translate(-2px, -2px); }
+  50% { transform: rotate(35deg) scale(0.9, 1.2) translate(4px, 4px); filter: brightness(1.5) drop-shadow(0 0 8px #c53424); }
+}
+
 .enemy-鬼 {
   color: #583178;
+}
+
+.enemy-鬼 .enemy-glyph-container {
+  transform-origin: center center;
+  animation: ghostFloat 2.4s ease-in-out infinite alternate;
+  animation-delay: calc(var(--enemy-delay, 0ms) + 150ms);
+}
+
+@keyframes ghostFloat {
+  0% { 
+    transform: translateY(3px) rotate(4deg) scale(0.98); 
+    opacity: 0.4; 
+    text-shadow: 
+      2px 4px 6px rgba(88, 49, 120, 0.5),
+      4px 8px 12px rgba(50, 20, 80, 0.3);
+  }
+  100% { 
+    transform: translateY(-12px) rotate(-4deg) scale(1.05); 
+    opacity: 0.85; 
+    text-shadow: 
+      -2px 6px 8px rgba(164, 90, 244, 0.7),
+      -4px 14px 16px rgba(100, 40, 180, 0.5),
+      -8px 24px 25px rgba(50, 10, 100, 0.3);
+  }
 }
 
 .enemy-妖 {
   color: #7a2d4b;
 }
 
+.enemy-妖 .enemy-weapon {
+  left: -0.5em;
+  top: 0.1em;
+  font-size: 0.7em;
+  transform-origin: center right;
+  animation: demonWhip 1.2s ease-in-out infinite;
+  animation-delay: calc(var(--enemy-delay, 0ms) + 300ms);
+}
+
+@keyframes demonWhip {
+  0%, 100% { transform: rotate(-15deg) scale(1) skewY(0deg); }
+  50% { transform: rotate(25deg) scale(0.8, 1.4) skewY(20deg) translate(2px, -3px); filter: drop-shadow(0 0 8px #f44286); }
+}
+
 .enemy-魔 {
-  color: #8f1712;
+  color: #a31d16;
+}
+
+.enemy-魔 .enemy-glyph-container {
+  transform-origin: bottom center;
+  animation: devilWalk 1.5s ease-in-out infinite alternate;
+}
+
+.enemy-魔 .enemy-glyph {
+  display: inline-block;
+  transform-origin: center;
+  animation: devilAura 1s ease-in-out infinite alternate;
+}
+
+@keyframes devilWalk {
+  0% { transform: scale(1); filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8)); }
+  100% { transform: scale(1.05) translateY(-3px); filter: drop-shadow(0 6px 4px rgba(0,0,0,0.6)); }
+}
+
+@keyframes devilAura {
+  0% { 
+    text-shadow: 
+      0 -2px 6px rgba(255, 20, 20, 0.8),
+      0 -4px 10px rgba(130, 0, 0, 0.7),
+      0 -6px 16px rgba(10, 0, 0, 0.9);
+  }
+  100% { 
+    text-shadow: 
+      0 -4px 10px rgba(255, 80, 50, 0.9),
+      0 -8px 18px rgba(180, 0, 0, 0.8),
+      0 -14px 28px rgba(0, 0, 0, 1);
+  }
 }
 
 .enemy.stunned {
   color: #8b5b08;
 }
 
-.enemy.stunned .enemy-glyph {
+.enemy.stunned .enemy-glyph-container {
   animation: enemyStunned 420ms ease-in-out infinite;
 }
 
-.enemy.slowed .enemy-glyph {
+.enemy.slowed .enemy-glyph-container {
   animation-duration: 1320ms;
 }
 
 .hp-line {
   position: absolute;
-  left: 18%;
-  right: 18%;
-  top: -7px;
-  height: 4px;
+  left: 12%;
+  right: 12%;
+  top: -10px;
+  height: 6px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 244, 216, 0.72);
-  border: 1px solid rgba(63, 38, 22, 0.24);
-  box-shadow: 0 1px 2px rgba(42, 24, 14, 0.16);
+  background: rgba(20, 10, 5, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  z-index: 100;
 }
 
 .hp-line i {
   display: block;
   height: 100%;
   width: 100%;
-  background: linear-gradient(90deg, #b92f24, #d98b35);
+  background: linear-gradient(90deg, #d32f2f, #ff6b33);
+  box-shadow: 0 0 2px rgba(255, 51, 51, 0.8);
 }
 
 @keyframes enemyWalk {
   0%, 100% {
-    transform: translate(0, 0) scale(1);
+    transform: translate(0, 0) scale(1.05, 0.95);
   }
-  35% {
-    transform: translate(calc(var(--enemy-step, 1) * 1.4px), -1.4px) scale(1.02);
+  50% {
+    transform: translate(0, -4px) scale(0.95, 1.05);
   }
-  70% {
-    transform: translate(calc(var(--enemy-step, 1) * -1px), 0.5px) scale(1);
+}
+
+@keyframes enemyShadow {
+  0%, 100% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+  45% {
+    transform: scale(0.6);
+    opacity: 0.3;
   }
 }
 
