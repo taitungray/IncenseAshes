@@ -1,6 +1,6 @@
 ﻿function onBenchClick(index) {
   if (Date.now() < state.suppressClickUntil) return;
-  if (state.phase !== "play") return;
+  if (!canManageUnits()) return;
   if (isSelectedBench(index)) {
     state.selected = null;
   } else {
@@ -11,7 +11,7 @@
 
 function onBoardClick(x, y) {
   if (Date.now() < state.suppressClickUntil) return;
-  if (state.phase !== "play") return;
+  if (!canManageUnits()) return;
   if (isPath(x, y)) return;
 
   if (!state.selected) {
@@ -27,7 +27,7 @@ function onBoardClick(x, y) {
 }
 
 function beginDrag(event, selection) {
-  if (state.phase !== "play") return;
+  if (!canManageUnits()) return;
   if (event.button !== undefined && event.button !== 0) return;
 
   const unit = selection.source === "bench"
@@ -212,12 +212,13 @@ function removeSelectedUnit() {
 
 function discardSelectedUnit() {
   const unit = selectedUnit();
-  if (!unit || state.phase !== "play") return;
+  if (!unit || !canManageUnits()) return;
   const refund = discardRefund(unit);
   const pos = selectedUnitBoardPosition();
   removeSelectedUnit();
   state.grain += refund;
   state.selected = null;
+  playGameSound("discard");
   if (pos) {
     floatText(pos.x, pos.y, `+${refund}`, "#d7a02f");
   }
@@ -247,6 +248,7 @@ function moveSelectedToBoard(x, y) {
     removeSelectedUnit();
     state.board[y][x] = moving;
     state.selected = null;
+    playGameSound("place");
     announceNewGodPairs(activeBefore);
     return;
   }
@@ -258,6 +260,8 @@ function moveSelectedToBoard(x, y) {
     if (targetPair) {
       const nextLevel = setGodPairLevel(targetPair, targetPair.level + 1);
       state.selected = null;
+      recordActivity("merge");
+      playGameSound("merge");
       mergeVfx(targetPair.cx, targetPair.cy, targetPair.left, `${targetPair.def.title} ${nextLevel}`);
       announceNewGodPairs(activeBefore);
       log(`${targetPair.def.title}升至 ${nextLevel} 級。`);
@@ -266,6 +270,8 @@ function moveSelectedToBoard(x, y) {
 
     state.board[y][x] = mergeUnits(target, moving);
     state.selected = null;
+    recordActivity("merge");
+    playGameSound("merge");
     mergeVfx(x, y, state.board[y][x]);
     announceNewGodPairs(activeBefore);
     log(mergedKind === "fragment" ? "神名字升階，香火更旺。" : "法器相合，香火更旺。");
@@ -278,6 +284,7 @@ function moveSelectedToBoard(x, y) {
     state.board[fromY][fromX] = target;
     state.board[y][x] = moving;
     state.selected = null;
+    playGameSound("place");
     announceNewGodPairs(activeBefore);
   }
 }

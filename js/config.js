@@ -38,6 +38,8 @@ const GLYPH_PARTS = {
   "怪": ["忄", "圣"],
   "鬼": ["丿", "鬼"],
   "妖": ["女", "夭"],
+  "魈": ["鬼", "肖"],
+  "煞": ["芻", "灬"],
   "魔": ["麻", "鬼"]
 };
 
@@ -45,17 +47,25 @@ const GOD_PAIRS = [
   { chars: ["媽", "祖"], title: "媽祖", slug: "mazu", range: 4.2, damage: 20, cooldown: 20, color: "#14618a", special: "pierce" },
   { chars: ["關", "公"], title: "關公", slug: "guangong", range: 1.9, damage: 34, cooldown: 30, color: "#c53424", special: "cleave" },
   { chars: ["城", "隍"], title: "城隍爺", slug: "chenghuang", range: 1.85, damage: 13, cooldown: 42, color: "#5b2f83", special: "stun" },
-  { chars: ["觀", "音"], title: "觀音", slug: "guanyin", range: 4.0, damage: 17, cooldown: 24, color: "#087668", special: "pierce" },
+  { chars: ["觀", "音"], title: "觀音", slug: "guanyin", range: 4.0, damage: 16, cooldown: 24, color: "#087668", special: "mercy" },
   { chars: ["王", "爺"], title: "王爺", slug: "wangye", range: 2.4, damage: 22, cooldown: 22, color: "#8b4b22", special: "dash" }
 ];
 
 const FRAGMENT_SET = new Set(GOD_PAIRS.flatMap(pair => pair.chars));
 
 const ENEMY_TYPES = {
-  "怪": { name: "小怪", hp: 48, speed: 1, reward: 4 },
-  "鬼": { name: "野鬼", hp: 88, speed: 0.72, reward: 5 },
-  "妖": { name: "山妖", hp: 58, speed: 1.34, reward: 6 },
-  "魔": { name: "魔王", hp: 210, speed: 0.56, reward: 18 }
+  "怪": { name: "路煞小怪", hp: 48, speed: 1, reward: 4 },
+  "鬼": { name: "孤魂野鬼", hp: 88, speed: 0.72, reward: 5 },
+  "妖": { name: "狐魅妖邪", hp: 58, speed: 1.34, reward: 6 },
+  "魈": { name: "山魈鬼王", hp: 320, speed: 0.88, reward: 30, boss: true, armor: 0.06, statusResistance: 0.82, baseDamage: 2, color: "#743b75" },
+  "煞": { name: "赤煞鬼將", hp: 460, speed: 0.52, reward: 50, boss: true, armor: 0.28, statusResistance: 0.68, baseDamage: 3, color: "#a6251d" },
+  "魔": { name: "黑煞魔王", hp: 720, speed: 0.44, reward: 90, boss: true, armor: 0.18, statusResistance: 0.48, baseDamage: 5, color: "#57211c" }
+};
+
+const BOSS_WAVES = {
+  4: "魈",
+  8: "煞",
+  12: "魔"
 };
 
 const CHOICES = [

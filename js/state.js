@@ -6,9 +6,12 @@ const baseHpEl = document.getElementById("base-hp");
 const waveEl = document.getElementById("wave");
 const grainEl = document.getElementById("grain");
 const killsEl = document.getElementById("kills");
+const remainingEl = document.getElementById("remaining");
 const summonBtn = document.getElementById("summon-btn");
 const summonCostEl = document.getElementById("summon-cost");
 const discardBtn = document.getElementById("discard-zone");
+const paceBtn = document.getElementById("pace-btn");
+const speedBtn = document.getElementById("speed-btn");
 const battleLogEl = document.getElementById("battle-log");
 const restartBtn = document.getElementById("restart-btn");
 const choiceModal = document.getElementById("choice-modal");
@@ -33,7 +36,11 @@ const state = {
   spawnLeft: 0,
   spawnTimer: 0,
   spawnDelay: 36,
-  phase: "play",
+  waveTotal: 0,
+  summonsSinceFragment: 0,
+  mercyCharge: 0,
+  gameSpeed: 1,
+  phase: "ready",
   interval: null,
   passives: {
     damage: 1,
@@ -44,4 +51,8 @@ const state = {
 };
 
 let dragState = null;
+
+function canManageUnits() {
+  return ["ready", "play", "paused", "between"].includes(state.phase);
+}
 

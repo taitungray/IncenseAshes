@@ -88,12 +88,83 @@ function hitVfx(x, y, color, extraClass = "", damage = null) {
   const pos = boardPercent(x, y);
   const hit = document.createElement("div");
   hit.className = `hit-spark ${extraClass}`.trim();
-  hit.textContent = damage ? String(damage) : "";
+  if (damage !== null) {
+    const number = document.createElement("strong");
+    number.className = `damage-number ${damage >= 25 ? "damage-heavy" : ""}`.trim();
+    number.textContent = `-${damage}`;
+    hit.appendChild(number);
+  }
   hit.style.color = color;
+  const driftDirection = Math.random() < 0.5 ? -1 : 1;
+  hit.style.setProperty("--damage-drift", `${driftDirection * Math.round(14 + Math.random() * 8)}px`);
+  hit.style.setProperty("--damage-tilt", `${Math.round(Math.random() * 8 - 4)}deg`);
   hit.style.setProperty("--hit-x", pos.left);
   hit.style.setProperty("--hit-y", pos.top);
   fxLayer.appendChild(hit);
-  setTimeout(() => hit.remove(), 360);
+  setTimeout(() => hit.remove(), 520);
+}
+
+function enemyHitReaction(enemy, effect, color) {
+  const el = document.getElementById(`enemy-${enemy.id}`);
+  if (!el) return;
+
+  const token = `${Date.now()}-${Math.random()}`;
+  const hitClasses = Array.from(el.classList).filter(name => name.startsWith("taking-hit"));
+  el.classList.remove(...hitClasses);
+  el.style.setProperty("--impact-color", color);
+  el.dataset.hitToken = token;
+  void el.offsetWidth;
+  el.classList.add("taking-hit", `taking-hit-${effect}`);
+
+  setTimeout(() => {
+    if (el.dataset.hitToken !== token) return;
+    el.classList.remove("taking-hit", `taking-hit-${effect}`);
+  }, 300);
+}
+
+function enemyDefeatVfx(enemy, pos) {
+  const enemyData = ENEMY_TYPES[enemy.type];
+  const source = document.getElementById(`enemy-${enemy.id}`);
+  const color = enemyData.color || (source ? getComputedStyle(source).color : "#43271a");
+  const defeat = document.createElement("div");
+  defeat.className = `enemy-defeat enemy-${enemy.type} enemy-defeat-${enemy.type} ${enemyData.boss ? "boss-defeat" : ""}`;
+  defeat.style.color = color;
+  const location = boardPercent(pos.x, pos.y);
+  defeat.style.left = location.left;
+  defeat.style.top = location.top;
+
+  const whole = document.createElement("span");
+  whole.className = "defeat-whole";
+  whole.textContent = enemy.type;
+  defeat.appendChild(whole);
+
+  const sourceGlyph = source?.querySelector(".enemy-glyph-container");
+  if (sourceGlyph) {
+    const glyph = sourceGlyph.cloneNode(true);
+    glyph.classList.add("defeat-glyph");
+    defeat.appendChild(glyph);
+  } else {
+    const glyph = document.createElement("span");
+    glyph.className = "defeat-glyph defeat-fallback";
+    glyph.textContent = enemy.type;
+    defeat.appendChild(glyph);
+  }
+
+  const particleCount = enemyData.boss ? 12 : 7;
+  for (let index = 0; index < particleCount; index += 1) {
+    const ink = document.createElement("i");
+    ink.className = "defeat-ink";
+    const angle = ((360 / particleCount) * index + (index % 2) * 17) * (Math.PI / 180);
+    const distance = (enemyData.boss ? 34 : 23) + (index % 3) * 7;
+    ink.style.setProperty("--ink-x", `${Math.cos(angle) * distance}px`);
+    ink.style.setProperty("--ink-y", `${Math.sin(angle) * distance}px`);
+    ink.style.setProperty("--ink-rot", `${index * 41 - 90}deg`);
+    ink.style.setProperty("--ink-delay", `${(index % 4) * 24}ms`);
+    defeat.appendChild(ink);
+  }
+
+  fxLayer.appendChild(defeat);
+  setTimeout(() => defeat.remove(), enemyData.boss ? 980 : 720);
 }
 
 function slashVfx(x, y, color) {
@@ -180,9 +251,17 @@ function godCallVfx(x, y, color, label) {
   floatText(x, y, label, "#fff6cf", "god-call");
 }
 
+function bossEntranceVfx(x, y, color, label) {
+  burstAt(x, y, color, 2.05, "boss-arrival");
+  floatText(x, y, label, color, "boss-call");
+}
+
 function godAttackVfx(pair, targetPos) {
   if (pair.def.special === "pierce") {
     beamFromTo(pair.cx, pair.cy, targetPos.x, targetPos.y, pair.def.color);
+    floatText(pair.cx, pair.cy, pair.def.title, pair.def.color, "attack-text");
+  } else if (pair.def.special === "mercy") {
+    beamFromTo(pair.cx, pair.cy, targetPos.x, targetPos.y, pair.def.color, "mercy-beam");
     floatText(pair.cx, pair.cy, pair.def.title, pair.def.color, "attack-text");
   } else if (pair.def.special === "cleave") {
     floatText(pair.cx, pair.cy, "斬", pair.def.color, "attack-text");

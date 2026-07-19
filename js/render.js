@@ -21,8 +21,29 @@ function randomBaseUnit(level = 1) {
   return makeUnit(chars[Math.floor(Math.random() * chars.length)], level, "base");
 }
 
+function preferredFragmentChars() {
+  const counts = new Map([...FRAGMENT_SET].map(char => [char, 0]));
+  state.bench.forEach(unit => {
+    if (unit?.kind === "fragment") counts.set(unit.char, (counts.get(unit.char) || 0) + 1);
+  });
+  state.board.flat().forEach(unit => {
+    if (unit?.kind === "fragment") counts.set(unit.char, (counts.get(unit.char) || 0) + 1);
+  });
+
+  const preferred = [];
+  GOD_PAIRS.forEach(pair => {
+    const [first, second] = pair.chars;
+    const firstCount = counts.get(first) || 0;
+    const secondCount = counts.get(second) || 0;
+    if (firstCount > secondCount) preferred.push(second);
+    if (secondCount > firstCount) preferred.push(first);
+  });
+  return preferred;
+}
+
 function randomFragmentUnit() {
-  const chars = [...FRAGMENT_SET];
+  const preferred = preferredFragmentChars();
+  const chars = preferred.length > 0 && Math.random() < 0.72 ? preferred : [...FRAGMENT_SET];
   return makeUnit(chars[Math.floor(Math.random() * chars.length)], 1, "fragment");
 }
 
@@ -259,7 +280,8 @@ function renderEnemies() {
       enemyLayer.appendChild(el);
     }
     
-    el.className = `enemy enemy-${enemy.type} ${enemy.stun > 0 ? "stunned" : ""} ${enemy.slow > 0 ? "slowed" : ""}`;
+    const enemyData = ENEMY_TYPES[enemy.type];
+    el.className = `enemy enemy-${enemy.type} ${enemyData.boss ? "boss" : ""} ${enemy.enraged ? "enraged" : ""} ${enemy.stun > 0 ? "stunned" : ""} ${enemy.slow > 0 ? "slowed" : ""}`;
     el.style.left = `${((pos.x + 0.5) / COLS) * 100}%`;
     el.style.top = `${((pos.y + 0.5) / ROWS) * 100}%`;
     
@@ -279,9 +301,23 @@ function updateHud() {
   waveEl.textContent = `${state.wave}`;
   grainEl.textContent = `${state.grain}`;
   killsEl.textContent = `${state.kills}`;
+  const remaining = state.spawnLeft + state.enemies.length;
+  remainingEl.textContent = state.phase === "ready" || state.phase === "between" ? "-" : `${remaining}`;
   summonCostEl.textContent = `${summonCost()}`;
-  summonBtn.disabled = state.grain < summonCost() || state.bench.length >= BENCH_LIMIT || state.phase !== "play";
-  discardBtn.disabled = !state.selected || state.phase !== "play";
+  summonBtn.disabled = state.grain < summonCost() || state.bench.length >= BENCH_LIMIT || !canManageUnits();
+  discardBtn.disabled = !state.selected || !canManageUnits();
+
+  paceBtn.hidden = state.phase === "choice" || state.phase === "ended";
+  paceBtn.disabled = !["ready", "play", "paused", "between"].includes(state.phase);
+  if (state.phase === "play") paceBtn.textContent = "暫停";
+  else if (state.phase === "paused") paceBtn.textContent = "繼續";
+  else paceBtn.textContent = `迎第 ${state.wave} 波`;
+
+  speedBtn.textContent = `${state.gameSpeed}×`;
+  speedBtn.classList.toggle("fast", state.gameSpeed === 2);
+  speedBtn.disabled = state.phase === "choice" || state.phase === "ended";
+  speedBtn.setAttribute("aria-pressed", String(state.gameSpeed === 2));
+  speedBtn.setAttribute("aria-label", `戰鬥速度 ${state.gameSpeed} 倍`);
 }
 
 function log(message) {
