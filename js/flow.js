@@ -16,8 +16,7 @@ function summon() {
     return;
   }
 
-  const level = Math.random() < 0.12 ? 2 : 1;
-  addBenchUnit(randomBaseUnit(level));
+  addBenchUnit(randomBaseUnit());
   log("新法器已入列。");
   renderAll();
 }
@@ -218,12 +217,8 @@ function resolveAttack(def, x, y, targets, damage, level, glyphs = ["令"]) {
     targets.slice(0, 3 + level).forEach((target, targetIndex) => {
       const charmDamage = Math.round(damage * (targetIndex === 0 ? 1 : 0.82));
       target.enemy.hp -= charmDamage;
-      glyphs.forEach((glyph, index) => {
-        shotFromTo(x, y, target.pos.x, target.pos.y, def.color, glyph, index + targetIndex, "charm");
-      });
       hitVfx(target.pos.x, target.pos.y, def.color, "ink-hit", charmDamage);
     });
-    glyphScatter(x, y, glyphs, def.color);
     return;
   }
 
@@ -290,7 +285,7 @@ function activeGodPairs() {
           rightY: ny,
           cx: (x + nx) / 2,
           cy: (y + ny) / 2,
-          level: (left.level + right.level) / 2,
+          level: Math.min(5, Math.max(left.level, right.level)),
           cells: [cellKey(x, y), cellKey(nx, ny)]
         });
       });
@@ -308,6 +303,19 @@ function activePairCellKeys() {
   return keys;
 }
 
+function godPairAtCell(x, y) {
+  const key = cellKey(x, y);
+  return activeGodPairs().find(pair => pair.cells.includes(key)) || null;
+}
+
+function setGodPairLevel(pair, level) {
+  const sharedLevel = Math.max(1, Math.min(5, Math.round(level)));
+  pair.left.level = sharedLevel;
+  pair.right.level = sharedLevel;
+  pair.level = sharedLevel;
+  return sharedLevel;
+}
+
 function activeGodPairIds() {
   return new Set(activeGodPairs().map(pair => pairId(pair)));
 }
@@ -318,6 +326,7 @@ function pairId(pair) {
 
 function announceNewGodPairs(previousIds) {
   activeGodPairs().forEach(pair => {
+    setGodPairLevel(pair, pair.level);
     if (previousIds.has(pairId(pair))) return;
     const label = `${pair.def.title}降臨`;
     godCallVfx(pair.cx, pair.cy, pair.def.color, label);

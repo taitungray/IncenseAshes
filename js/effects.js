@@ -48,7 +48,7 @@ function unitColor(unit) {
 }
 
 function glyphParts(glyph) {
-  if (["符", "鏡", "鈴", "印"].includes(glyph)) return [glyph];
+  if (BASE_UNITS[glyph]) return [glyph];
   return GLYPH_PARTS[glyph] || [glyph];
 }
 
@@ -169,8 +169,8 @@ function floatText(x, y, text, color = "#d7a02f", extraClass = "") {
   setTimeout(() => el.remove(), 820);
 }
 
-function mergeVfx(x, y, unit) {
-  const label = unit.kind === "fragment" ? `${unit.char}字升階` : `${unit.char}${unit.level}`;
+function mergeVfx(x, y, unit, customLabel = "") {
+  const label = customLabel || (unit.kind === "fragment" ? `${unit.char}字升階` : `${unit.char}${unit.level}`);
   burstAt(x, y, "#d7a02f", 1.35, "merge-burst");
   floatText(x, y, label, "#fff0a8", "merge-text");
 }
@@ -211,12 +211,9 @@ function beamFromTo(sx, sy, tx, ty, color, extraClass = "") {
   setTimeout(() => beam.remove(), 260);
 }
 
-function triggerScreenShake(intensity = "light") {
+function triggerScreenShake() {
   const shell = document.getElementById("game-shell");
   if (!shell) return;
   shell.classList.remove("shake-light", "shake-medium", "shake-heavy");
-  void shell.offsetWidth; // trigger reflow
-  shell.classList.add(`shake-${intensity}`);
-  setTimeout(() => shell.classList.remove(`shake-${intensity}`), 400);
 }
 

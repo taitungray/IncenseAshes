@@ -253,11 +253,20 @@ function moveSelectedToBoard(x, y) {
 
   if (canMergeAt(moving, target, x, y)) {
     const mergedKind = target.kind;
+    const targetPair = mergedKind === "fragment" ? godPairAtCell(x, y) : null;
     removeSelectedUnit();
+    if (targetPair) {
+      const nextLevel = setGodPairLevel(targetPair, targetPair.level + 1);
+      state.selected = null;
+      mergeVfx(targetPair.cx, targetPair.cy, targetPair.left, `${targetPair.def.title} ${nextLevel}`);
+      announceNewGodPairs(activeBefore);
+      log(`${targetPair.def.title}升至 ${nextLevel} 級。`);
+      return;
+    }
+
     state.board[y][x] = mergeUnits(target, moving);
     state.selected = null;
     mergeVfx(x, y, state.board[y][x]);
-    triggerScreenShake("medium");
     announceNewGodPairs(activeBefore);
     log(mergedKind === "fragment" ? "神名字升階，香火更旺。" : "法器相合，香火更旺。");
     return;
@@ -275,9 +284,10 @@ function moveSelectedToBoard(x, y) {
 
 function canMergeAt(a, b, targetX, targetY) {
   if (!a || !b) return false;
-  if (a.char !== b.char || a.level !== b.level || a.kind !== b.kind) return false;
-  if (a.kind === "base") return a.level < 5;
-  return activePairCellKeys().has(cellKey(targetX, targetY));
+  if (a.char !== b.char || a.kind !== b.kind) return false;
+  if (a.kind === "base") return a.level === b.level && a.level < 5;
+  const pair = godPairAtCell(targetX, targetY);
+  return Boolean(pair && pair.level < 5);
 }
 
 function mergeUnits(a, b) {

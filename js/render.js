@@ -64,7 +64,11 @@ function renderAll() {
 function renderBoard() {
   const activePairs = activeGodPairs();
   const activePairCells = new Set();
-  activePairs.forEach(pair => pair.cells.forEach(key => activePairCells.add(key)));
+  const pairByCell = new Map();
+  activePairs.forEach(pair => pair.cells.forEach(key => {
+    activePairCells.add(key);
+    pairByCell.set(key, pair);
+  }));
   boardEl.querySelectorAll(".pair-ring").forEach(el => el.remove());
   const cells = boardEl.querySelectorAll(".cell");
   cells.forEach(cell => {
@@ -83,7 +87,8 @@ function renderBoard() {
     unitEl.className = `unit ${unit.kind === "base" ? "artifact" : ""} ${fragmentClasses(unit)} ${activePairCells.has(key) ? "linked" : ""}`.trim();
     applyFragmentData(unitEl, unit);
     applyGlyphMotion(unitEl, x + y * COLS);
-    unitEl.innerHTML = glyphHtml(unit.char, unit.kind === "base") + `<small>${unit.level}</small>`;
+    const linkedPair = pairByCell.get(key);
+    unitEl.innerHTML = glyphHtml(unit.char, unit.kind === "base") + (linkedPair ? "" : `<small>${unit.level}</small>`);
     unitEl.title = unitTitle(unit, activePairCells.has(key));
     unitEl.addEventListener("pointerdown", event => beginDrag(event, { source: "board", x, y }));
     cell.appendChild(unitEl);
@@ -93,17 +98,19 @@ function renderBoard() {
 
 function renderPairRings(activePairs) {
   activePairs.forEach(pair => {
-    if (pair.def.slug !== "guangong") return;
     const minX = Math.min(pair.leftX, pair.rightX);
     const maxX = Math.max(pair.leftX, pair.rightX);
     const minY = Math.min(pair.leftY, pair.rightY);
     const maxY = Math.max(pair.leftY, pair.rightY);
     const ring = document.createElement("div");
-    ring.className = `pair-ring guangong-ring ${minY === maxY ? "horizontal-ring" : "vertical-ring"}`;
+    ring.className = `pair-ring deity-pair-ring pair-${pair.def.slug} ${minY === maxY ? "horizontal-ring" : "vertical-ring"}`;
+    ring.dataset.deity = pair.def.title;
+    ring.style.setProperty("--pair-color", pair.def.color);
     ring.style.left = `${(minX / COLS) * 100}%`;
     ring.style.top = `${(minY / ROWS) * 100}%`;
     ring.style.width = `${((maxX - minX + 1) / COLS) * 100}%`;
     ring.style.height = `${((maxY - minY + 1) / ROWS) * 100}%`;
+    ring.innerHTML = `<span class="pair-level">${pair.level}</span>`;
     boardEl.appendChild(ring);
   });
 }
@@ -157,12 +164,31 @@ function applyFragmentData(el, unit) {
 }
 
 function glyphHtml(char, split = false) {
-  const parts = split ? GLYPH_PARTS[char] : null;
-  if (parts?.length) {
-    const partHtml = parts
+  if (split && char === "符") {
+    return (
+      `<span class="glyph artifact-glyph artifact-glyph-符" data-glyph="符" role="img" aria-label="符">`
+      + `<span class="artifact-charm-whole">符</span>`
+      + `<span class="artifact-part artifact-part-0">⺮</span>`
+      + `<span class="artifact-part artifact-part-1">付</span>`
+      + `</span>`
+    );
+  }
+
+  if (split && char === "印") {
+    return (
+      `<span class="glyph artifact-glyph artifact-glyph-印" data-glyph="印" role="img" aria-label="印">`
+      + `<span class="artifact-ink-whole">印</span>`
+      + `<span class="artifact-part artifact-part-0 artifact-ink-slice artifact-ink-left"><span class="artifact-ink-source">印</span></span>`
+      + `<span class="artifact-part artifact-part-1 artifact-ink-weapon">卩</span>`
+      + `</span>`
+    );
+  }
+
+  if (split && BASE_UNITS[char] && GLYPH_PARTS[char]) {
+    const legacyParts = GLYPH_PARTS[char]
       .map((part, index) => `<span class="artifact-part artifact-part-${index}" data-part="${part}">${part}</span>`)
       .join("");
-    return `<span class="glyph artifact-glyph artifact-glyph-${char}" data-glyph="${char}" aria-label="${char}">${partHtml}</span>`;
+    return `<span class="glyph artifact-glyph artifact-glyph-${char}" data-glyph="${char}" role="img" aria-label="${char}">${legacyParts}</span>`;
   }
   return `<span class="glyph whole-glyph" data-glyph="${char}">${char}</span>`;
 }
