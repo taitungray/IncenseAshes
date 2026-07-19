@@ -3533,3 +3533,178 @@ body.dragging-card {
     transform: translate(1px, 0) rotate(calc(var(--part-angle, 0deg) + 2deg)) scale(1.02);
   }
 }
+
+/* Keep each artifact readable, then let only its own components perform the attack. */
+.unit.artifact.attacking .artifact-glyph-符,
+.unit.artifact.attacking .artifact-glyph-鏡,
+.unit.artifact.attacking .artifact-glyph-鈴,
+.unit.artifact.attacking .artifact-glyph-印 {
+  animation: none !important;
+  transform: none !important;
+}
+
+.unit.artifact.attacking .artifact-glyph-鏡 .artifact-part-0 {
+  animation: mirrorMetalBrace 520ms cubic-bezier(0.14, 1.45, 0.2, 1) both !important;
+}
+
+.unit.artifact.attacking .artifact-glyph-鏡 .artifact-part-1 {
+  animation: mirrorFaceCast 520ms cubic-bezier(0.12, 1.6, 0.18, 1) both !important;
+  animation-delay: 24ms !important;
+}
+
+.unit.artifact.attacking .artifact-glyph-鈴 .artifact-part-0 {
+  animation: bellMetalHold 540ms cubic-bezier(0.16, 1.2, 0.22, 1) both !important;
+}
+
+.unit.artifact.attacking .artifact-glyph-鈴 .artifact-part-1 {
+  animation: bellCommandSwing 540ms cubic-bezier(0.16, 1.2, 0.22, 1) both !important;
+  animation-delay: 18ms !important;
+}
+
+.unit.artifact.attacking .artifact-glyph-符 .artifact-part-0 {
+  animation: charmCrownAttack 460ms cubic-bezier(0.12, 1.75, 0.18, 1) both !important;
+}
+
+.unit.artifact.attacking .artifact-glyph-符 .artifact-part-1 {
+  animation: charmBodyAttack 460ms cubic-bezier(0.12, 1.75, 0.18, 1) both !important;
+  animation-delay: 24ms !important;
+}
+
+.unit.artifact .artifact-glyph-符 .artifact-charm-radical {
+  left: 0.14em;
+  top: -0.08em;
+  right: auto;
+  bottom: auto;
+  width: auto;
+  font-family: "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+  font-size: 0.74em;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  transform-origin: 50% 88%;
+}
+
+.unit.artifact .artifact-glyph-符 .artifact-charm-body {
+  left: 0.18em;
+  top: 0.25em;
+  right: auto;
+  bottom: auto;
+  width: auto;
+  font-family: "DFKai-SB", "KaiTi", "Noto Serif TC", serif;
+  font-size: 0.78em;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  transform-origin: 50% 54%;
+}
+
+.unit.artifact.attacking .artifact-glyph-印 .artifact-part-0 {
+  animation: sealBodyBrace 520ms cubic-bezier(0.12, 1.45, 0.18, 1) both !important;
+}
+
+.unit.artifact.attacking .artifact-glyph-印 .artifact-part-1 {
+  animation: sealWeaponStrike 520ms cubic-bezier(0.1, 1.65, 0.16, 1) both !important;
+  animation-delay: 22ms !important;
+}
+
+@keyframes mirrorMetalBrace {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  20% {
+    transform: translate(-3px, 1px) rotate(calc(var(--part-angle, 0deg) - 8deg)) scale(0.9, 1.12);
+  }
+  48% {
+    transform: translate(-5px, 0) rotate(calc(var(--part-angle, 0deg) - 13deg)) scale(0.86, 1.16);
+  }
+  70% {
+    transform: translate(-1px, 0) rotate(calc(var(--part-angle, 0deg) + 5deg)) scale(1.05, 0.96);
+  }
+}
+
+@keyframes mirrorFaceCast {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  20% {
+    transform: translate(calc(var(--attack-dx) * -0.12 - 2px), calc(var(--attack-dy) * -0.08)) rotate(calc(var(--part-angle, 0deg) - 10deg)) scale(0.9, 1.08);
+  }
+  46% {
+    transform: translate(calc(var(--attack-dx) * 0.62 + 4px), calc(var(--attack-dy) * 0.48 - 1px)) rotate(calc(var(--part-angle, 0deg) + 13deg)) scale(1.22, 0.84);
+  }
+  68% {
+    transform: translate(calc(var(--attack-dx) * 0.2 + 1px), calc(var(--attack-dy) * 0.14)) rotate(calc(var(--part-angle, 0deg) - 5deg)) scale(0.94, 1.06);
+  }
+  84% {
+    transform: translate(1px, 0) rotate(calc(var(--part-angle, 0deg) + 2deg)) scale(1.03);
+  }
+}
+
+@keyframes bellMetalHold {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  18% {
+    transform: translate(-2px, -1px) rotate(calc(var(--part-angle, 0deg) - 5deg)) scale(0.94, 1.06);
+  }
+  42% {
+    transform: translate(-3px, 0) rotate(calc(var(--part-angle, 0deg) + 5deg)) scale(0.92, 1.08);
+  }
+  66% {
+    transform: translate(-1px, 0) rotate(calc(var(--part-angle, 0deg) - 3deg)) scale(1.02, 0.98);
+  }
+}
+
+@keyframes bellCommandSwing {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  16% {
+    transform: translate(-4px, -1px) rotate(calc(var(--part-angle, 0deg) - 22deg)) scale(0.94, 1.06);
+  }
+  36% {
+    transform: translate(calc(var(--attack-dx) * 0.3 + 5px), calc(var(--attack-dy) * 0.16 + 1px)) rotate(calc(var(--part-angle, 0deg) + 24deg)) scale(1.08, 0.94);
+  }
+  56% {
+    transform: translate(-3px, 0) rotate(calc(var(--part-angle, 0deg) - 17deg)) scale(0.96, 1.04);
+  }
+  74% {
+    transform: translate(2px, 0) rotate(calc(var(--part-angle, 0deg) + 10deg)) scale(1.03, 0.98);
+  }
+  88% {
+    transform: translate(-1px, 0) rotate(calc(var(--part-angle, 0deg) - 4deg)) scale(0.99, 1.01);
+  }
+}
+
+@keyframes sealBodyBrace {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  18% {
+    transform: translate(-3px, -2px) rotate(calc(var(--part-angle, 0deg) - 6deg)) scale(0.9, 1.1);
+  }
+  46% {
+    transform: translate(-2px, 2px) rotate(calc(var(--part-angle, 0deg) + 3deg)) scale(1.08, 0.9);
+  }
+  68% {
+    transform: translate(0, 1px) rotate(calc(var(--part-angle, 0deg) - 2deg)) scale(0.98, 1.04);
+  }
+}
+
+@keyframes sealWeaponStrike {
+  0%, 100% {
+    transform: translate(0, 0) rotate(var(--part-angle, 0deg)) scale(1);
+  }
+  16% {
+    transform: translate(calc(var(--attack-dx) * -0.18 - 3px), calc(var(--attack-dy) * -0.12 - 2px)) rotate(calc(var(--part-angle, 0deg) - 14deg)) scale(0.86, 1.14);
+  }
+  40% {
+    transform: translate(calc(var(--attack-dx) * 0.72 + 6px), calc(var(--attack-dy) * 0.56 - 2px)) rotate(calc(var(--part-angle, 0deg) + 23deg)) scale(1.26, 0.8);
+  }
+  58% {
+    transform: translate(calc(var(--attack-dx) * 0.28 + 3px), calc(var(--attack-dy) * 0.2 + 2px)) rotate(calc(var(--part-angle, 0deg) - 9deg)) scale(0.92, 1.08);
+  }
+  78% {
+    transform: translate(1px, 0) rotate(calc(var(--part-angle, 0deg) + 4deg)) scale(1.04, 0.98);
+  }
+}

@@ -217,8 +217,12 @@ function resolveAttack(def, x, y, targets, damage, level, glyphs = ["令"]) {
     targets.slice(0, 3 + level).forEach((target, targetIndex) => {
       const charmDamage = Math.round(damage * (targetIndex === 0 ? 1 : 0.82));
       target.enemy.hp -= charmDamage;
+      glyphs.forEach((glyph, index) => {
+        shotFromTo(x, y, target.pos.x, target.pos.y, def.color, glyph, index + targetIndex, "charm");
+      });
       hitVfx(target.pos.x, target.pos.y, def.color, "ink-hit", charmDamage);
     });
+    glyphScatter(x, y, glyphs, def.color);
     return;
   }
 

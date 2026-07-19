@@ -168,8 +168,8 @@ function glyphHtml(char, split = false) {
     return (
       `<span class="glyph artifact-glyph artifact-glyph-符" data-glyph="符" role="img" aria-label="符">`
       + `<span class="artifact-charm-whole">符</span>`
-      + `<span class="artifact-part artifact-part-0">⺮</span>`
-      + `<span class="artifact-part artifact-part-1">付</span>`
+      + `<span class="artifact-part artifact-part-0 artifact-charm-radical">⺮</span>`
+      + `<span class="artifact-part artifact-part-1 artifact-charm-body">付</span>`
       + `</span>`
     );
   }
