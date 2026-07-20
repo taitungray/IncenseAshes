@@ -68,6 +68,10 @@ const BOSS_WAVES = {
   12: "魔"
 };
 
+function attackPower(def, level) {
+  return Math.round(def.damage * (1 + (level - 1) * 0.62) * state.passives.damage);
+}
+
 const CHOICES = [
   { id: "bell", name: "鈴聲淨壇", copy: "所有鎮守出手更快。", apply: state => { state.passives.speed *= 0.88; } },
   { id: "clear_incense", name: "清香繞境", copy: "護陣距離小幅提高。", apply: state => { state.passives.range *= 1.12; } },

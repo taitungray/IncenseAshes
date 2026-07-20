@@ -14,6 +14,7 @@ function resetGame() {
   state.enemies = [];
   state.bench = [];
   state.selected = null;
+  state.inspected = null;
   state.grain = 80;
   state.wave = 1;
   state.kills = 0;
@@ -34,6 +35,7 @@ function resetGame() {
 
   initBoard();
   for (let i = 0; i < 4; i += 1) addBenchUnit(randomBaseUnit());
+  state.inspected = { source: "bench", index: 0 };
   choiceModal.classList.add("hidden");
   resultModal.classList.add("hidden");
   fxLayer.innerHTML = "";

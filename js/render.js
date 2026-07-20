@@ -80,6 +80,52 @@ function renderAll() {
   renderBench();
   renderEnemies();
   updateHud();
+  renderUnitInspector();
+}
+
+function inspectedUnit() {
+  if (!state.inspected) return null;
+  if (state.inspected.source === "bench") {
+    return state.bench[state.inspected.index] || null;
+  }
+  return state.board[state.inspected.y]?.[state.inspected.x] || null;
+}
+
+function renderUnitInspector() {
+  const unit = inspectedUnit();
+  if (!unit) {
+    unitInspectorNameEl.textContent = "法壇";
+    unitInspectorLevelEl.textContent = "待命";
+    unitInspectorAttackEl.textContent = "-";
+    unitInspectorEl.setAttribute("aria-label", "尚未選取法器");
+    return;
+  }
+
+  let name;
+  let level = unit.level;
+  let damage = 0;
+
+  if (unit.kind === "base") {
+    const def = BASE_UNITS[unit.char];
+    name = def.name;
+    damage = attackPower(def, level);
+  } else {
+    const pair = state.inspected.source === "board"
+      ? godPairAtCell(state.inspected.x, state.inspected.y)
+      : null;
+    if (pair) {
+      name = pair.def.title;
+      level = pair.level;
+      damage = attackPower(pair.def, level);
+    } else {
+      name = `${unit.char}・未成組`;
+    }
+  }
+
+  unitInspectorNameEl.textContent = name;
+  unitInspectorLevelEl.textContent = `${level}級`;
+  unitInspectorAttackEl.textContent = String(damage);
+  unitInspectorEl.setAttribute("aria-label", `${name}，${level}級，攻擊力 ${damage}`);
 }
 
 function renderBoard() {

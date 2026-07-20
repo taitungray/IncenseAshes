@@ -1,6 +1,7 @@
 ﻿function onBenchClick(index) {
   if (Date.now() < state.suppressClickUntil) return;
   if (!canManageUnits()) return;
+  state.inspected = { source: "bench", index };
   if (isSelectedBench(index)) {
     state.selected = null;
   } else {
@@ -16,6 +17,7 @@ function onBoardClick(x, y) {
 
   if (!state.selected) {
     if (state.board[y][x]) {
+      state.inspected = { source: "board", x, y };
       state.selected = { source: "board", x, y };
       renderAll();
     }
@@ -39,6 +41,7 @@ function beginDrag(event, selection) {
   event.stopPropagation();
 
   state.selected = selection;
+  state.inspected = { ...selection };
   dragState = {
     pointerId: event.pointerId,
     selection,
@@ -218,6 +221,7 @@ function discardSelectedUnit() {
   removeSelectedUnit();
   state.grain += refund;
   state.selected = null;
+  state.inspected = state.bench.length > 0 ? { source: "bench", index: 0 } : null;
   playGameSound("discard");
   if (pos) {
     floatText(pos.x, pos.y, `+${refund}`, "#d7a02f");
@@ -248,6 +252,7 @@ function moveSelectedToBoard(x, y) {
     removeSelectedUnit();
     state.board[y][x] = moving;
     state.selected = null;
+    state.inspected = { source: "board", x, y };
     playGameSound("place");
     announceNewGodPairs(activeBefore);
     return;
@@ -260,6 +265,7 @@ function moveSelectedToBoard(x, y) {
     if (targetPair) {
       const nextLevel = setGodPairLevel(targetPair, targetPair.level + 1);
       state.selected = null;
+      state.inspected = { source: "board", x, y };
       recordActivity("merge");
       playGameSound("merge");
       mergeVfx(targetPair.cx, targetPair.cy, targetPair.left, `${targetPair.def.title} ${nextLevel}`);
@@ -270,6 +276,7 @@ function moveSelectedToBoard(x, y) {
 
     state.board[y][x] = mergeUnits(target, moving);
     state.selected = null;
+    state.inspected = { source: "board", x, y };
     recordActivity("merge");
     playGameSound("merge");
     mergeVfx(x, y, state.board[y][x]);
@@ -284,6 +291,7 @@ function moveSelectedToBoard(x, y) {
     state.board[fromY][fromX] = target;
     state.board[y][x] = moving;
     state.selected = null;
+    state.inspected = { source: "board", x, y };
     playGameSound("place");
     announceNewGodPairs(activeBefore);
   }

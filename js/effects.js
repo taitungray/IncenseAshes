@@ -5,6 +5,10 @@
   };
 }
 
+function fxRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function pulseUnitAt(x, y, target = null) {
   const index = y * COLS + x;
   const unitEl = boardEl.children[index]?.querySelector(".unit");
@@ -63,10 +67,16 @@ function shotFromTo(sx, sy, tx, ty, color, glyph = "令", index = 0, mode = "sin
   shot.style.top = start.top;
   shot.style.setProperty("--to-x", end.left);
   shot.style.setProperty("--to-y", end.top);
-  const arc = mode === "dash" ? (index % 2 === 0 ? -28 : 28) : (index % 2 === 0 ? -12 : 12);
+  const arcBase = mode === "dash" ? 28 : mode === "charm" ? 18 : 12;
+  const arc = (index % 2 === 0 ? -1 : 1) * (arcBase + fxRandomInt(-7, 9));
   shot.style.setProperty("--arc", `${arc}px`);
+  const rotationRange = mode === "sword" ? 6 : 18;
+  shot.style.setProperty("--shot-rot", `${fxRandomInt(-rotationRange, rotationRange)}deg`);
+  const duration = fxRandomInt(450, 550);
+  shot.style.animationDuration = `${duration}ms`;
+  shot.style.animationDelay = `${fxRandomInt(0, 28)}ms`;
   fxLayer.appendChild(shot);
-  setTimeout(() => shot.remove(), 560);
+  setTimeout(() => shot.remove(), duration + 90);
 }
 
 function battlefieldThump() {
@@ -92,12 +102,39 @@ function hitVfx(x, y, color, extraClass = "", damage = null) {
     const number = document.createElement("strong");
     number.className = `damage-number ${damage >= 25 ? "damage-heavy" : ""}`.trim();
     number.textContent = `-${damage}`;
-    hit.appendChild(number);
+
+    const direction = [-1, -1, 0, 1, 1][fxRandomInt(0, 4)];
+    const finalX = direction === 0
+      ? fxRandomInt(-10, 10)
+      : direction * fxRandomInt(30, 52);
+    const apexY = -fxRandomInt(damage >= 25 ? 46 : 38, damage >= 25 ? 60 : 54);
+    const startTilt = fxRandomInt(-7, 7);
+    const spin = fxRandomInt(7, 15) * (direction || (Math.random() < 0.5 ? -1 : 1));
+    const duration = fxRandomInt(680, 820);
+
+    number.style.left = pos.left;
+    number.style.top = pos.top;
+    number.style.setProperty("--damage-launch-x", `${Math.round(finalX * 0.12)}px`);
+    number.style.setProperty("--damage-launch-y", `${Math.round(apexY * 0.48)}px`);
+    number.style.setProperty("--damage-rise-x", `${Math.round(finalX * 0.3)}px`);
+    number.style.setProperty("--damage-rise-y", `${Math.round(apexY * 0.84)}px`);
+    number.style.setProperty("--damage-apex-x", `${Math.round(finalX * 0.46)}px`);
+    number.style.setProperty("--damage-apex-y", `${apexY}px`);
+    number.style.setProperty("--damage-fall-top-x", `${Math.round(finalX * 0.6)}px`);
+    number.style.setProperty("--damage-fall-top-y", `${Math.round(apexY * 0.88)}px`);
+    number.style.setProperty("--damage-fall-x", `${Math.round(finalX * 0.76)}px`);
+    number.style.setProperty("--damage-fall-y", `${Math.round(apexY * 0.48)}px`);
+    number.style.setProperty("--damage-land-x", `${finalX}px`);
+    number.style.setProperty("--damage-land-y", `${fxRandomInt(8, 18)}px`);
+    number.style.setProperty("--damage-tilt-start", `${startTilt}deg`);
+    number.style.setProperty("--damage-tilt-apex", `${startTilt + Math.round(spin * 0.45)}deg`);
+    number.style.setProperty("--damage-tilt-end", `${startTilt + spin}deg`);
+    number.style.animationDuration = `${duration}ms`;
+    fxLayer.appendChild(number);
+    setTimeout(() => number.remove(), duration + 60);
   }
   hit.style.color = color;
-  const driftDirection = Math.random() < 0.5 ? -1 : 1;
-  hit.style.setProperty("--damage-drift", `${driftDirection * Math.round(14 + Math.random() * 8)}px`);
-  hit.style.setProperty("--damage-tilt", `${Math.round(Math.random() * 8 - 4)}deg`);
+  hit.style.setProperty("--impact-rot", `${fxRandomInt(-24, 24)}deg`);
   hit.style.setProperty("--hit-x", pos.left);
   hit.style.setProperty("--hit-y", pos.top);
   fxLayer.appendChild(hit);
@@ -112,6 +149,10 @@ function enemyHitReaction(enemy, effect, color) {
   const hitClasses = Array.from(el.classList).filter(name => name.startsWith("taking-hit"));
   el.classList.remove(...hitClasses);
   el.style.setProperty("--impact-color", color);
+  const hitRotation = fxRandomInt(-9, 9);
+  el.style.setProperty("--enemy-hit-rot", `${hitRotation}deg`);
+  el.style.setProperty("--enemy-hit-return-rot", `${Math.round(hitRotation * -0.65)}deg`);
+  el.style.setProperty("--enemy-impact-rot", `${fxRandomInt(-24, 24)}deg`);
   el.dataset.hitToken = token;
   void el.offsetWidth;
   el.classList.add("taking-hit", `taking-hit-${effect}`);
@@ -164,7 +205,7 @@ function enemyDefeatVfx(enemy, pos) {
   }
 
   fxLayer.appendChild(defeat);
-  setTimeout(() => defeat.remove(), enemyData.boss ? 980 : 720);
+  setTimeout(() => defeat.remove(), enemyData.boss ? 540 : 420);
 }
 
 function slashVfx(x, y, color) {
@@ -174,6 +215,9 @@ function slashVfx(x, y, color) {
   slash.style.color = color;
   slash.style.setProperty("--slash-x", pos.left);
   slash.style.setProperty("--slash-y", pos.top);
+  const slashAngle = fxRandomInt(-42, -12);
+  slash.style.setProperty("--slash-angle", `${slashAngle}deg`);
+  slash.style.setProperty("--slash-angle-end", `${slashAngle + fxRandomInt(-8, 10)}deg`);
   fxLayer.appendChild(slash);
   setTimeout(() => slash.remove(), 420);
 }
@@ -186,6 +230,10 @@ function wardVfx(x, y, color, text) {
   ward.style.color = color;
   ward.style.setProperty("--ward-x", pos.left);
   ward.style.setProperty("--ward-y", pos.top);
+  const wardRotation = fxRandomInt(-14, 14);
+  ward.style.setProperty("--ward-rot", `${wardRotation}deg`);
+  ward.style.setProperty("--ward-return-rot", `${Math.round(wardRotation * -0.55)}deg`);
+  ward.style.setProperty("--ward-drift", `${fxRandomInt(-8, 8)}px`);
   fxLayer.appendChild(ward);
   setTimeout(() => ward.remove(), 520);
 }
@@ -194,10 +242,10 @@ function glyphScatter(x, y, glyphs, color) {
   const pos = boardPercent(x, y);
   const pieces = glyphs;
   const spread = [
-    { x: "-44px", y: "-20px", r: "-24deg" },
-    { x: "42px", y: "-18px", r: "26deg" },
-    { x: "-28px", y: "34px", r: "18deg" },
-    { x: "30px", y: "34px", r: "-18deg" }
+    { x: -44, y: -20, r: -24 },
+    { x: 42, y: -18, r: 26 },
+    { x: -28, y: 34, r: 18 },
+    { x: 30, y: 34, r: -18 }
   ];
 
   pieces.forEach((glyph, index) => {
@@ -208,9 +256,9 @@ function glyphScatter(x, y, glyphs, color) {
     piece.style.color = color;
     piece.style.setProperty("--piece-x", pos.left);
     piece.style.setProperty("--piece-y", pos.top);
-    piece.style.setProperty("--piece-dx", move.x);
-    piece.style.setProperty("--piece-dy", move.y);
-    piece.style.setProperty("--piece-rot", move.r);
+    piece.style.setProperty("--piece-dx", `${move.x + fxRandomInt(-9, 9)}px`);
+    piece.style.setProperty("--piece-dy", `${move.y + fxRandomInt(-8, 8)}px`);
+    piece.style.setProperty("--piece-rot", `${move.r + fxRandomInt(-16, 16)}deg`);
     fxLayer.appendChild(piece);
     setTimeout(() => piece.remove(), 520);
   });
@@ -224,6 +272,7 @@ function burstAt(x, y, color, size, extraClass = "") {
   burst.style.setProperty("--burst-x", pos.left);
   burst.style.setProperty("--burst-y", pos.top);
   burst.style.setProperty("--burst-size", `${Math.max(1, size) * 58}px`);
+  burst.style.setProperty("--burst-rot", `${fxRandomInt(-18, 18)}deg`);
   fxLayer.appendChild(burst);
   setTimeout(() => burst.remove(), 360);
 }
@@ -286,8 +335,12 @@ function beamFromTo(sx, sy, tx, ty, color, extraClass = "") {
   beam.style.top = `${startY}%`;
   beam.style.width = `${Math.hypot(dx, dy)}%`;
   beam.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+  const beamDuration = fxRandomInt(220, 310);
+  beam.style.height = `${fxRandomInt(2, extraClass === "mercy-beam" ? 6 : 5)}px`;
+  beam.style.opacity = `${(0.7 + Math.random() * 0.22).toFixed(2)}`;
+  beam.style.animationDuration = `${beamDuration}ms`;
   fxLayer.appendChild(beam);
-  setTimeout(() => beam.remove(), 260);
+  setTimeout(() => beam.remove(), beamDuration + 40);
 }
 
 function triggerScreenShake() {

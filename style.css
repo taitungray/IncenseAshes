@@ -1692,21 +1692,21 @@ body.dragging-card {
 
 @keyframes shot {
   0% {
-    transform: translate(-50%, -50%) scale(0.6) rotate(-18deg);
+    transform: translate(-50%, -50%) scale(0.6) rotate(calc(var(--shot-rot, 0deg) - 18deg));
     opacity: 0;
   }
   15% {
     opacity: 1;
-    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.35) rotate(20deg);
+    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.35) rotate(calc(var(--shot-rot, 0deg) + 20deg));
   }
   45% {
-    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.12) rotate(90deg);
+    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.12) rotate(calc(var(--shot-rot, 0deg) + 90deg));
   }
   to {
     left: var(--to-x);
     top: var(--to-y);
     opacity: 0.15;
-    transform: translate(-50%, -50%) scale(0.65) rotate(180deg);
+    transform: translate(-50%, -50%) scale(0.65) rotate(calc(var(--shot-rot, 0deg) + 180deg));
   }
 }
 
@@ -1756,7 +1756,7 @@ body.dragging-card {
 
 @keyframes burst {
   to {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) rotate(var(--burst-rot, 0deg)) scale(1);
     opacity: 0;
   }
 }
@@ -2298,7 +2298,7 @@ body.dragging-card {
   top: var(--slash-y);
   width: 54px;
   height: 28px;
-  transform: translate(-50%, -50%) rotate(-26deg) scale(0.7);
+  transform: translate(-50%, -50%) rotate(var(--slash-angle, -26deg)) scale(0.7);
   animation: slashMark 420ms ease-out forwards;
 }
 
@@ -2329,7 +2329,7 @@ body.dragging-card {
   font-size: 1.35rem;
   font-weight: 900;
   line-height: 1;
-  transform: translate(-50%, -50%) scale(0.72);
+  transform: translate(-50%, -50%) rotate(var(--ward-rot, 0deg)) scale(0.72);
   animation: wardMark 520ms cubic-bezier(0.18, 1.35, 0.2, 1) forwards;
 }
 
@@ -2339,170 +2339,170 @@ body.dragging-card {
 
 @keyframes charmShot {
   0% {
-    transform: translate(-50%, -50%) scale(0.72) rotate(-10deg);
+    transform: translate(-50%, -50%) scale(0.72) rotate(calc(var(--shot-rot, 0deg) - 10deg));
     opacity: 0;
   }
   24% {
     opacity: 1;
-    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.28, 0.88) rotate(-4deg);
+    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.28, 0.88) rotate(calc(var(--shot-rot, 0deg) - 4deg));
   }
   100% {
     left: var(--to-x);
     top: var(--to-y);
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.85, 1.2) rotate(5deg);
+    transform: translate(-50%, -50%) scale(0.85, 1.2) rotate(calc(var(--shot-rot, 0deg) + 5deg));
   }
 }
 
 @keyframes mirrorShot {
   0% {
-    transform: translate(-50%, -50%) scale(0.7) rotate(-12deg);
+    transform: translate(-50%, -50%) scale(0.7) rotate(calc(var(--shot-rot, 0deg) - 12deg));
     opacity: 0;
   }
   28% {
     opacity: 1;
-    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.22, 0.84) rotate(8deg);
+    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.22, 0.84) rotate(calc(var(--shot-rot, 0deg) + 8deg));
   }
   100% {
     left: var(--to-x);
     top: var(--to-y);
     opacity: 0;
-    transform: translate(-50%, -50%) scale(1.44, 0.62) rotate(18deg);
+    transform: translate(-50%, -50%) scale(1.44, 0.62) rotate(calc(var(--shot-rot, 0deg) + 18deg));
   }
 }
 
 @keyframes bellShot {
   0% {
-    transform: translate(-50%, -50%) scale(0.65);
+    transform: translate(-50%, -50%) scale(0.65) rotate(var(--shot-rot, 0deg));
     opacity: 0;
   }
   22% {
     opacity: 1;
-    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.34);
+    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.34) rotate(calc(var(--shot-rot, 0deg) + 12deg));
   }
   44% {
-    transform: translate(-50%, calc(-50% - var(--arc))) scale(0.84, 1.2);
+    transform: translate(-50%, calc(-50% - var(--arc))) scale(0.84, 1.2) rotate(calc(var(--shot-rot, 0deg) - 10deg));
   }
   100% {
     left: var(--to-x);
     top: var(--to-y);
     opacity: 0;
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translate(-50%, -50%) scale(1.1) rotate(calc(var(--shot-rot, 0deg) + 6deg));
   }
 }
 
 @keyframes swordShot {
   0% {
-    transform: translate(-50%, -50%) translateX(-7px) rotate(-20deg) scale(0.78);
+    transform: translate(-50%, -50%) translateX(-7px) rotate(calc(var(--shot-rot, 0deg) - 20deg)) scale(0.78);
     opacity: 0;
   }
   24% {
     opacity: 1;
-    transform: translate(-50%, calc(-50% + var(--arc))) translateX(7px) rotate(14deg) scale(1.1);
+    transform: translate(-50%, calc(-50% + var(--arc))) translateX(7px) rotate(calc(var(--shot-rot, 0deg) + 14deg)) scale(1.1);
   }
   100% {
     left: var(--to-x);
     top: var(--to-y);
     opacity: 0;
-    transform: translate(-50%, -50%) translateX(10px) rotate(38deg) scale(0.92);
+    transform: translate(-50%, -50%) translateX(10px) rotate(calc(var(--shot-rot, 0deg) + 38deg)) scale(0.92);
   }
 }
 
 @keyframes sealShot {
   0% {
-    transform: translate(-50%, -50%) scale(1.25);
+    transform: translate(-50%, -50%) scale(1.25) rotate(var(--shot-rot, 0deg));
     opacity: 0;
   }
   24% {
     opacity: 1;
-    transform: translate(-50%, calc(-50% + var(--arc))) scale(0.82);
+    transform: translate(-50%, calc(-50% + var(--arc))) scale(0.82) rotate(calc(var(--shot-rot, 0deg) - 9deg));
   }
   58% {
-    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.18, 0.86);
+    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.18, 0.86) rotate(calc(var(--shot-rot, 0deg) + 11deg));
   }
   100% {
     left: var(--to-x);
     top: var(--to-y);
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
+    transform: translate(-50%, -50%) scale(0.9) rotate(calc(var(--shot-rot, 0deg) + 20deg));
   }
 }
 
 @keyframes pierceShot {
   0% {
-    transform: translate(-50%, -50%) scale(0.78);
+    transform: translate(-50%, -50%) scale(0.78) rotate(var(--shot-rot, 0deg));
     opacity: 0;
   }
   18% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.32, 0.72);
+    transform: translate(-50%, -50%) scale(1.32, 0.72) rotate(calc(var(--shot-rot, 0deg) + 5deg));
   }
   100% {
     left: var(--to-x);
     top: var(--to-y);
     opacity: 0;
-    transform: translate(-50%, -50%) scale(1.5, 0.62);
+    transform: translate(-50%, -50%) scale(1.5, 0.62) rotate(calc(var(--shot-rot, 0deg) + 12deg));
   }
 }
 
 @keyframes dashShot {
   0% {
-    transform: translate(-50%, -50%) scale(0.8) rotate(-18deg);
+    transform: translate(-50%, -50%) scale(0.8) rotate(calc(var(--shot-rot, 0deg) - 18deg));
     opacity: 0;
   }
   20% {
     opacity: 1;
-    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.2) rotate(22deg);
+    transform: translate(-50%, calc(-50% + var(--arc))) scale(1.2) rotate(calc(var(--shot-rot, 0deg) + 22deg));
   }
   100% {
     left: var(--to-x);
     top: var(--to-y);
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8) rotate(180deg);
+    transform: translate(-50%, -50%) scale(0.8) rotate(calc(var(--shot-rot, 0deg) + 180deg));
   }
 }
 
 @keyframes slashMark {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(-28deg) scale(0.4);
+    transform: translate(-50%, -50%) rotate(var(--slash-angle, -28deg)) scale(0.4);
   }
   30% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(-28deg) scale(1.35);
+    transform: translate(-50%, -50%) rotate(var(--slash-angle-end, -28deg)) scale(1.35);
   }
 }
 
 @keyframes wardMark {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.45);
+    transform: translate(-50%, -50%) rotate(var(--ward-rot, 0deg)) scale(0.45);
   }
   28% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
+    transform: translate(calc(-50% + var(--ward-drift, 0px)), -50%) rotate(var(--ward-return-rot, 0deg)) scale(1.2);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -62%) scale(0.92);
+    transform: translate(calc(-50% + var(--ward-drift, 0px)), -62%) rotate(calc(var(--ward-rot, 0deg) + 8deg)) scale(0.92);
   }
 }
 
 @keyframes patrolMark {
   0% {
     opacity: 0;
-    transform: translate(-65%, -50%) rotate(-18deg) scale(0.7);
+    transform: translate(-65%, -50%) rotate(calc(var(--ward-rot, 0deg) - 18deg)) scale(0.7);
   }
   35% {
     opacity: 1;
-    transform: translate(-35%, -50%) rotate(18deg) scale(1.12);
+    transform: translate(calc(-35% + var(--ward-drift, 0px)), -50%) rotate(calc(var(--ward-rot, 0deg) + 18deg)) scale(1.12);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -70%) rotate(36deg) scale(0.86);
+    transform: translate(calc(-50% + var(--ward-drift, 0px)), -70%) rotate(calc(var(--ward-rot, 0deg) + 36deg)) scale(0.86);
   }
 }
 
@@ -4556,7 +4556,7 @@ body.dragging-card {
   height: 30px;
   border: 2px solid var(--impact-color, currentColor);
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.35);
+  transform: translate(-50%, -50%) rotate(var(--enemy-impact-rot, 0deg)) scale(0.35);
   animation: enemyImpact 280ms ease-out both;
   pointer-events: none;
 }
@@ -4615,20 +4615,18 @@ body.dragging-card {
   height: 3px;
   background: currentColor;
   z-index: -1;
-  transform: translate(-50%, -50%) rotate(24deg);
+  transform: translate(-50%, -50%) rotate(calc(var(--impact-rot, 0deg) + 24deg));
 }
 
 .hit-spark::after {
   width: 27px;
-  transform: translate(-50%, -50%) rotate(-58deg);
+  transform: translate(-50%, -50%) rotate(calc(var(--impact-rot, 0deg) - 58deg));
   opacity: 0.62;
 }
 
-.hit-spark .damage-number {
+.damage-number {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 2;
+  z-index: 44;
   min-width: 0;
   padding: 0;
   color: #d13a27;
@@ -4643,12 +4641,13 @@ body.dragging-card {
   paint-order: stroke fill;
   text-shadow: 0 2px 0 rgba(53, 26, 17, 0.28);
   white-space: nowrap;
-  transform: translate(-50%, -50%) rotate(var(--damage-tilt));
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(var(--damage-tilt-start, 0deg));
   transform-origin: 50% 80%;
-  animation: damageNumberJump 520ms cubic-bezier(0.16, 1.15, 0.22, 1) both;
+  animation: damageNumberArc 700ms linear both;
 }
 
-.hit-spark .damage-number.damage-heavy {
+.damage-number.damage-heavy {
   color: #ef5a32;
   font-size: 1.18rem;
   -webkit-text-stroke-width: 1.2px;
@@ -4693,6 +4692,8 @@ body.dragging-card {
 }
 
 .enemy-defeat {
+  --defeat-duration: 360ms;
+  --defeat-particle-duration: 320ms;
   position: absolute;
   z-index: 42;
   width: 10.8%;
@@ -4705,6 +4706,8 @@ body.dragging-card {
 }
 
 .enemy-defeat.boss-defeat {
+  --defeat-duration: 480ms;
+  --defeat-particle-duration: 420ms;
   width: 15%;
   z-index: 46;
   font-size: 2.15rem;
@@ -4719,10 +4722,10 @@ body.dragging-card {
   place-items: center;
   width: 1.35em;
   height: 1.35em;
-  font-size: 1.28em;
+  font-size: 1em;
   line-height: 1;
   transform: translate(-50%, -50%);
-  animation: enemyDefeatStamp 700ms cubic-bezier(0.18, 0.9, 0.2, 1) forwards;
+  animation: enemyDefeatStamp var(--defeat-duration) ease-out forwards;
 }
 
 .enemy-defeat .defeat-glyph {
@@ -4733,12 +4736,12 @@ body.dragging-card {
   height: 1em;
   line-height: 1;
   transform: translate(-50%, -50%);
-  animation: enemyDefeatBody 700ms cubic-bezier(0.2, 0.75, 0.22, 1) forwards !important;
+  animation: enemyDefeatBody var(--defeat-duration) ease-out forwards !important;
 }
 
 .enemy-defeat .enemy-glyph,
 .enemy-defeat .enemy-weapon {
-  animation: enemyDefeatStrokeRight 700ms cubic-bezier(0.2, 0.75, 0.22, 1) forwards !important;
+  animation: enemyDefeatStrokeRight var(--defeat-duration) ease-out forwards !important;
 }
 
 .enemy-defeat .enemy-weapon {
@@ -4762,27 +4765,13 @@ body.dragging-card {
 .enemy-defeat.boss-defeat .defeat-glyph,
 .enemy-defeat.boss-defeat .enemy-glyph,
 .enemy-defeat.boss-defeat .defeat-whole {
-  animation-duration: 940ms !important;
+  animation-duration: var(--defeat-duration) !important;
 }
 
 .enemy-defeat.boss-defeat::before,
 .enemy-defeat.boss-defeat::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 56px;
-  height: 56px;
-  border: 4px double currentColor;
-  transform: translate(-50%, -50%) rotate(0deg) scale(0.45);
-  animation: bossDefeatSeal 940ms ease-out forwards;
-}
-
-.enemy-defeat.boss-defeat::after {
-  width: 38px;
-  height: 38px;
-  border-style: solid;
-  animation-delay: 70ms;
+  content: none;
+  display: none;
 }
 
 .defeat-ink {
@@ -4794,13 +4783,13 @@ body.dragging-card {
   background: currentColor;
   opacity: 0;
   transform: translate(-50%, -50%) rotate(0deg);
-  animation: defeatInk 620ms ease-out var(--ink-delay) forwards;
+  animation: defeatInk var(--defeat-particle-duration) ease-out var(--ink-delay) forwards;
 }
 
 .boss-defeat .defeat-ink {
   width: 12px;
   height: 4px;
-  animation-duration: 880ms;
+  animation-duration: var(--defeat-particle-duration);
 }
 
 @keyframes bellTrail {
@@ -4811,15 +4800,15 @@ body.dragging-card {
 
 @keyframes enemyHit {
   0% { transform: translate(0, 0) scale(1); }
-  28% { transform: translate(2px, -3px) rotate(5deg) scale(1.16, 0.86); }
-  58% { transform: translate(-2px, 1px) rotate(-4deg) scale(0.9, 1.14); }
+  28% { transform: translate(2px, -3px) rotate(var(--enemy-hit-rot, 5deg)) scale(1.16, 0.86); }
+  58% { transform: translate(-2px, 1px) rotate(var(--enemy-hit-return-rot, -4deg)) scale(0.9, 1.14); }
   100% { transform: translate(0, 0) scale(1); }
 }
 
 @keyframes enemyHitRadical {
   0% { transform: translate(0, 0) rotate(0deg); }
-  34% { transform: translate(-5px, -4px) rotate(-15deg) scale(1.18); }
-  68% { transform: translate(3px, 2px) rotate(9deg) scale(0.94); }
+  34% { transform: translate(-5px, -4px) rotate(calc(var(--enemy-hit-rot, 0deg) - 15deg)) scale(1.18); }
+  68% { transform: translate(3px, 2px) rotate(calc(var(--enemy-hit-return-rot, 0deg) + 9deg)) scale(0.94); }
   100% { transform: translate(0, 0) rotate(0deg); }
 }
 
@@ -4831,73 +4820,114 @@ body.dragging-card {
 }
 
 @keyframes enemyImpact {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.35); }
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--enemy-impact-rot, 0deg)) scale(0.35); }
   30% { opacity: 0.9; }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.35) rotate(16deg); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.35) rotate(calc(var(--enemy-impact-rot, 0deg) + 16deg)); }
 }
 
 @keyframes crispHit {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.45) rotate(-8deg); }
-  24% { opacity: 1; transform: translate(-50%, -50%) scale(1.14) rotate(3deg); }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.45) rotate(calc(var(--impact-rot, 0deg) - 8deg)); }
+  24% { opacity: 1; transform: translate(-50%, -50%) scale(1.14) rotate(calc(var(--impact-rot, 0deg) + 3deg)); }
   68% { opacity: 0.88; transform: translate(-50%, -74%) scale(0.98); }
-  100% { opacity: 0; transform: translate(calc(-50% + var(--damage-drift)), -122%) scale(0.82); }
+  100% { opacity: 0; transform: translate(-50%, -122%) scale(0.82); }
 }
 
-@keyframes damageNumberJump {
+@keyframes damageNumberArc {
   0% {
     opacity: 0;
-    transform: translate(-50%, -20%) rotate(var(--damage-tilt)) scale(0.48);
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--damage-tilt-start, 0deg))
+      scale(0.48);
   }
-  20% {
+  12% {
     opacity: 1;
-    transform: translate(calc(-50% + var(--damage-drift)), -155%) rotate(var(--damage-tilt)) scale(1.46);
+    transform:
+      translate(
+        calc(-50% + var(--damage-launch-x)),
+        calc(-50% + var(--damage-launch-y))
+      )
+      rotate(var(--damage-tilt-start, 0deg))
+      scale(1.42);
   }
-  43% {
+  30% {
     opacity: 1;
-    transform: translate(calc(-50% + var(--damage-drift)), -104%) rotate(var(--damage-tilt)) scale(0.96);
+    transform:
+      translate(
+        calc(-50% + var(--damage-rise-x)),
+        calc(-50% + var(--damage-rise-y))
+      )
+      rotate(var(--damage-tilt-apex, 0deg))
+      scale(1.16);
   }
-  68% {
-    opacity: 0.94;
-    transform: translate(calc(-50% + var(--damage-drift)), -168%) rotate(var(--damage-tilt)) scale(1.06);
+  46% {
+    opacity: 1;
+    transform:
+      translate(
+        calc(-50% + var(--damage-apex-x)),
+        calc(-50% + var(--damage-apex-y))
+      )
+      rotate(var(--damage-tilt-apex, 0deg))
+      scale(1.02);
+  }
+  60% {
+    opacity: 1;
+    transform:
+      translate(
+        calc(-50% + var(--damage-fall-top-x)),
+        calc(-50% + var(--damage-fall-top-y))
+      )
+      rotate(var(--damage-tilt-apex, 0deg))
+      scale(0.99);
+  }
+  76% {
+    opacity: 1;
+    transform:
+      translate(
+        calc(-50% + var(--damage-fall-x)),
+        calc(-50% + var(--damage-fall-y))
+      )
+      rotate(var(--damage-tilt-apex, 0deg))
+      scale(0.96);
   }
   100% {
     opacity: 0;
-    transform: translate(calc(-50% + var(--damage-drift)), -245%) rotate(var(--damage-tilt)) scale(0.88);
+    transform:
+      translate(
+        calc(-50% + var(--damage-land-x)),
+        calc(-50% + var(--damage-land-y))
+      )
+      rotate(var(--damage-tilt-end, 0deg))
+      scale(0.78);
   }
 }
 
 @keyframes enemyDefeatBody {
-  0%, 20% { opacity: 0; transform: translate(-50%, -50%) scale(0.88); }
-  30% { opacity: 1; transform: translate(-50%, -58%) scale(1.22, 0.82); }
-  56% { opacity: 0.84; transform: translate(-50%, -46%) scale(0.9, 1.18); }
-  100% { opacity: 0; transform: translate(-50%, -92%) scale(0.5, 1.35); }
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  38% { opacity: 0.84; transform: translate(-50%, -54%) scale(0.92, 0.98); }
+  100% { opacity: 0; transform: translate(-50%, -76%) scale(0.52, 0.78); }
 }
 
 @keyframes enemyDefeatStamp {
-  0% { opacity: 1; transform: translate(-50%, -50%) scale(0.78, 1.24); }
-  18% { opacity: 1; transform: translate(-50%, -56%) scale(1.36, 0.84); }
-  48% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
-  66% { opacity: 0.78; transform: translate(-50%, -50%) scale(1.36); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.42); }
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  36% { opacity: 0.78; transform: translate(-50%, -54%) scale(0.9, 0.96); }
+  100% { opacity: 0; transform: translate(-50%, -70%) scale(0.48, 0.72); }
 }
 
 @keyframes enemyDefeatStrokeLeft {
-  0%, 22% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
-  32% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
   100% { opacity: 0; transform: translate(-22px, -17px) rotate(-34deg) scale(0.68); }
 }
 
 @keyframes enemyDefeatStrokeRight {
-  0%, 22% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
-  32% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  0% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
   100% { opacity: 0; transform: translate(24px, 14px) rotate(31deg) scale(0.72); }
 }
 
 @keyframes enemyDefeatWhole {
   0% { opacity: 1; transform: translate(0, 0) scale(1); }
-  22% { opacity: 1; transform: translate(0, -3px) scale(1.22, 0.82); }
-  58% { opacity: 0.74; transform: translate(0, 3px) scale(0.76, 1.2); }
-  100% { opacity: 0; transform: translate(0, -20px) scale(0.42, 1.35); }
+  38% { opacity: 0.78; transform: translate(0, -2px) scale(0.9, 0.96); }
+  100% { opacity: 0; transform: translate(0, -14px) scale(0.46, 0.7); }
 }
 
 @keyframes defeatInk {
@@ -4907,12 +4937,6 @@ body.dragging-card {
     opacity: 0;
     transform: translate(calc(-50% + var(--ink-x)), calc(-50% + var(--ink-y))) rotate(var(--ink-rot)) scaleX(1.2);
   }
-}
-
-@keyframes bossDefeatSeal {
-  0% { opacity: 0; transform: translate(-50%, -50%) rotate(-12deg) scale(0.35); }
-  28% { opacity: 0.9; transform: translate(-50%, -50%) rotate(5deg) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -50%) rotate(32deg) scale(1.55); }
 }
 
 @media (max-width: 520px) {
@@ -5137,6 +5161,61 @@ h1 {
   gap: 5px;
   color: #372318;
   font-size: 0.83rem;
+}
+
+.unit-inspector {
+  width: 78px;
+  min-width: 78px;
+  height: 34px;
+  padding-right: 6px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px;
+  border-right: 1px solid rgba(91, 54, 25, 0.24);
+}
+
+.unit-inspector-copy {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+  line-height: 1;
+}
+
+.unit-inspector-copy strong {
+  overflow: hidden;
+  font-size: 0.67rem;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.unit-inspector-copy small {
+  color: #7b6041;
+  font-size: 0.5rem;
+  font-weight: 800;
+}
+
+.unit-attack-stat {
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  color: #a6251d;
+  line-height: 1;
+}
+
+.unit-attack-stat small {
+  font-size: 0.48rem;
+  font-weight: 900;
+}
+
+.unit-attack-stat b {
+  max-width: 30px;
+  overflow: hidden;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.88rem;
+  line-height: 1;
+  text-overflow: ellipsis;
 }
 
 .altar-actions {
@@ -5440,13 +5519,26 @@ h1 {
     padding-inline: 5px;
   }
 
-  .bench-header > span {
+  .unit-inspector {
+    width: 58px;
+    min-width: 58px;
+    padding-right: 3px;
+    gap: 2px;
+  }
+
+  .unit-inspector-copy strong {
+    font-size: 0.58rem;
+  }
+
+  .unit-inspector-copy small {
     display: none;
   }
 
   .altar-actions {
-    width: 100%;
+    width: auto;
+    flex: 1;
     justify-content: flex-end;
+    gap: 2px;
   }
 
   #pace-btn {

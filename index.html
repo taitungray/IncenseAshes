@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#8f2d22">
   <title>廟埕守香</title>
-    <link rel="stylesheet" href="style.css?v=mobile-6">
+    <link rel="stylesheet" href="style.css?v=mobile-12">
 </head>
 <body>
   <main id="game-shell">
@@ -58,7 +58,16 @@
 
       <section class="command-panel" aria-label="法壇">
         <div class="bench-header">
-          <span>法壇</span>
+          <div id="unit-inspector" class="unit-inspector" aria-live="polite">
+            <span class="unit-inspector-copy">
+              <strong id="unit-inspector-name">法壇</strong>
+              <small id="unit-inspector-level">待命</small>
+            </span>
+            <span class="unit-attack-stat">
+              <small>攻</small>
+              <b id="unit-inspector-attack">-</b>
+            </span>
+          </div>
           <div class="altar-actions">
             <button id="pace-btn" type="button">迎第 1 波</button>
             <button id="speed-btn" type="button" aria-label="戰鬥速度 1 倍" aria-pressed="false" title="戰鬥速度">1×</button>
@@ -132,14 +141,14 @@
     </div>
   </div>
 
-    <script src="js/config.js?v=mobile-6"></script>
-    <script src="js/state.js?v=mobile-6"></script>
-    <script src="js/audio.js?v=mobile-6"></script>
-    <script src="js/activities.js?v=mobile-6"></script>
-    <script src="js/render.js?v=mobile-6"></script>
-    <script src="js/input.js?v=mobile-6"></script>
-    <script src="js/flow.js?v=mobile-6"></script>
-    <script src="js/effects.js?v=mobile-6"></script>
-    <script src="js/app.js?v=mobile-6"></script>
+    <script src="js/config.js?v=mobile-12"></script>
+    <script src="js/state.js?v=mobile-12"></script>
+    <script src="js/audio.js?v=mobile-12"></script>
+    <script src="js/activities.js?v=mobile-12"></script>
+    <script src="js/render.js?v=mobile-12"></script>
+    <script src="js/input.js?v=mobile-12"></script>
+    <script src="js/flow.js?v=mobile-12"></script>
+    <script src="js/effects.js?v=mobile-12"></script>
+    <script src="js/app.js?v=mobile-12"></script>
 </body>
 </html>

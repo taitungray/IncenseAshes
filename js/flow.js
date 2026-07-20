@@ -1,6 +1,7 @@
 ﻿function addBenchUnit(unit) {
   if (state.bench.length < BENCH_LIMIT) {
     state.bench.push(unit);
+    state.inspected = { source: "bench", index: state.bench.length - 1 };
   }
 }
 
@@ -180,7 +181,7 @@ function attackWithBaseUnits() {
       const targets = enemiesInRange(x, y, range);
       if (targets.length === 0) continue;
 
-      const damage = Math.round(def.damage * (1 + (unit.level - 1) * 0.62) * state.passives.damage);
+      const damage = attackPower(def, unit.level);
       pulseUnitAt(x, y, targets[0].pos);
       resolveAttack(def, x, y, targets, damage, unit.level, [unit.char]);
       playGameSound(def.effect || def.special || "sword");
@@ -200,7 +201,7 @@ function attackWithGodPairs() {
     const targets = enemiesInRange(pair.cx, pair.cy, range);
     if (targets.length === 0) return;
 
-    const damage = Math.round(pair.def.damage * (1 + (pair.level - 1) * 0.62) * state.passives.damage);
+    const damage = attackPower(pair.def, pair.level);
     pulseUnitAt(pair.leftX, pair.leftY, targets[0].pos);
     pulseUnitAt(pair.rightX, pair.rightY, targets[0].pos);
     resolveAttack(pair.def, pair.cx, pair.cy, targets, damage, pair.level, [pair.left.char, pair.right.char]);

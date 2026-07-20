@@ -21,12 +21,17 @@ const resultKicker = document.getElementById("result-kicker");
 const resultTitle = document.getElementById("result-title");
 const resultCopy = document.getElementById("result-copy");
 const resultBtn = document.getElementById("result-btn");
+const unitInspectorEl = document.getElementById("unit-inspector");
+const unitInspectorNameEl = document.getElementById("unit-inspector-name");
+const unitInspectorLevelEl = document.getElementById("unit-inspector-level");
+const unitInspectorAttackEl = document.getElementById("unit-inspector-attack");
 
 const state = {
   board: [],
   bench: [],
   enemies: [],
   selected: null,
+  inspected: null,
   suppressClickUntil: 0,
   grain: 80,
   wave: 1,
