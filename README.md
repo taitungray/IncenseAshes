@@ -109,6 +109,13 @@
 - `assets/temple-backdrop.webp`：廟埕背景。
 - `assets/temple-board.webp`：棋盤與面板質感。
 - `assets/discard-burner.webp`：化去圖示。
+- `assets/nav-battle.png`：底部「守香」分類圖示。
+- `assets/nav-checkin.png`：底部「簽到」分類圖示。
+- `assets/nav-tasks.png`：底部「任務」分類圖示。
+- `assets/nav-events.png`：底部「活動」分類圖示。
+- `assets/nav-codex.png`：底部「神明譜」分類圖示。
+
+底部分類使用獨立透明圖片，不在遊戲中顯示產圖用的合併圖或來源圖。選取分類時只改變按鈕層次，不替文字或圖示加模糊光暈。
 
 設計注意事項：
 
@@ -156,6 +163,15 @@
 
 任務完成後必須在活動中心手動領取香火。
 
+### 次要介面
+
+- 點選底部分類後，只打開該分類介面，不在介面內重複顯示其他活動分頁。
+- 每日簽到：顯示今日天數、今日獎勵、七日獎勵表與重置時間。
+- 每日任務：顯示總完成度、各任務進度與一鍵領取。
+- 每日活動：顯示巡境完成度、魔王波次與一鍵領取。
+- 神明譜：列出法器、神明合字、攻擊力、射程、攻擊特色與妖邪資料。
+- 內容超過手機高度時只在介面內捲動，主戰鬥畫面保持原位。
+
 ## 檔案結構
 
 ```text
@@ -176,6 +192,11 @@ IncenseAshes/
     temple-backdrop.webp
     temple-board.webp
     discard-burner.webp
+    nav-battle.png
+    nav-checkin.png
+    nav-tasks.png
+    nav-events.png
+    nav-codex.png
 ```
 
 ### `index.html`

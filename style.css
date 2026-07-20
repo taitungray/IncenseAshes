@@ -5553,3 +5553,555 @@ h1 {
     font-size: 0.56rem;
   }
 }
+
+/* Illustrated navigation and complete secondary screens */
+.hub-content > * {
+  flex: 0 0 auto;
+}
+
+.game-nav {
+  min-height: 66px;
+  padding-top: 3px;
+  padding-bottom: calc(3px + env(safe-area-inset-bottom));
+  background:
+    linear-gradient(180deg, rgba(255, 252, 239, 0.98), rgba(243, 218, 164, 0.98)),
+    url("assets/temple-board.webp") center 88% / 165% auto;
+}
+
+.nav-item {
+  min-height: 58px;
+  grid-template-rows: 39px 14px;
+  border-top-width: 2px;
+  overflow: visible;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  color: #8e281f;
+  border-color: #b53a2c;
+  background: rgba(185, 58, 44, 0.07);
+}
+
+.nav-icon {
+  width: 38px;
+  height: 38px;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+}
+
+.nav-icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 0 rgba(70, 36, 18, 0.24));
+  transform: translateY(0) scale(0.94);
+  transform-origin: 50% 80%;
+  transition: transform 150ms ease-out;
+}
+
+.nav-item.active .nav-icon img {
+  transform: translateY(-3px) scale(1.08);
+}
+
+.nav-item strong {
+  font-size: 0.62rem;
+  font-weight: 900;
+}
+
+.nav-dot {
+  right: calc(50% - 20px);
+  top: 3px;
+  z-index: 3;
+}
+
+.hub-header {
+  position: relative;
+  justify-content: flex-start;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.hub-section-icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 0 rgba(47, 23, 13, 0.28));
+}
+
+#hub-close-btn {
+  margin-left: auto;
+}
+
+.hub-banner {
+  min-height: 132px;
+}
+
+.hub-banner-progress {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+  color: #fff5d8;
+  font-size: 0.67rem;
+  font-weight: 900;
+}
+
+.hub-banner-progress > i {
+  height: 5px;
+  overflow: hidden;
+  background: rgba(255, 246, 218, 0.26);
+}
+
+.hub-banner-progress b {
+  width: var(--progress, 0%);
+  height: 100%;
+  display: block;
+  background: #f1c45b;
+}
+
+.hub-overview {
+  min-height: 58px;
+  padding: 7px 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: center;
+  gap: 6px;
+  border-block: 1px solid rgba(95, 65, 32, 0.17);
+  background: rgba(236, 215, 163, 0.28);
+}
+
+.hub-overview > div {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.hub-overview small {
+  color: #786043;
+  font-size: 0.58rem;
+}
+
+.hub-overview strong {
+  color: #8f2d22;
+  font-size: 1rem;
+}
+
+.claim-all-btn {
+  min-width: 72px;
+  height: 33px;
+  padding: 0 9px;
+  border: 1px solid #8e281f;
+  border-radius: 5px;
+  color: #fff8e8;
+  background: #9f3025;
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.claim-all-btn:disabled {
+  border-color: rgba(91, 65, 36, 0.14);
+  color: #8a765b;
+  background: rgba(110, 84, 50, 0.12);
+}
+
+.boss-route {
+  min-height: 48px;
+  padding: 6px 4px;
+  display: grid;
+  grid-template-columns: 1fr repeat(3, auto);
+  align-items: center;
+  gap: 10px;
+  color: #6b5033;
+  border-bottom: 1px solid rgba(95, 65, 32, 0.12);
+  font-size: 0.66rem;
+  font-weight: 900;
+}
+
+.boss-route > div {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.boss-route i {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(166, 37, 29, 0.35);
+  border-radius: 50%;
+  color: #a6251d;
+  background: #fff6dd;
+  font-size: 0.58rem;
+  font-style: normal;
+}
+
+.boss-route strong {
+  color: #4b2d24;
+  font-size: 0.82rem;
+}
+
+.activity-card,
+.mission-row {
+  position: relative;
+  overflow: hidden;
+}
+
+.activity-card::before,
+.mission-row::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: #9d7a48;
+}
+
+.activity-card.ready::before,
+.mission-row.ready::before {
+  background: #b33428;
+}
+
+.activity-card.claimed,
+.mission-row.claimed {
+  opacity: 0.68;
+}
+
+.mission-state {
+  display: block;
+  margin-bottom: 2px;
+  color: #8c6e47;
+  font-size: 0.54rem;
+  font-weight: 900;
+}
+
+.ready .mission-state {
+  color: #a6251d;
+}
+
+.reward-line > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.reward-flame {
+  width: 10px;
+  height: 14px;
+  display: inline-block;
+  border-radius: 7px 7px 8px 8px;
+  background: #d7a02f;
+  clip-path: polygon(53% 0, 92% 42%, 80% 86%, 50% 100%, 18% 84%, 9% 49%);
+}
+
+.task-overview {
+  min-height: 96px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border-block: 1px solid rgba(95, 65, 32, 0.17);
+  background:
+    linear-gradient(90deg, rgba(8, 118, 104, 0.1), rgba(215, 160, 47, 0.13)),
+    url("assets/temple-board.webp") center 45% / 180% auto;
+}
+
+.task-ring {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  background: conic-gradient(#087668 var(--task-progress), rgba(91, 65, 36, 0.14) 0);
+  box-shadow: inset 0 0 0 7px #fff4d8;
+  text-align: center;
+}
+
+.task-ring strong {
+  color: #493123;
+  font-size: 0.85rem;
+}
+
+.task-ring small {
+  color: #786043;
+  font-size: 0.48rem;
+}
+
+.task-overview > div:nth-child(2) {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.task-overview > div:nth-child(2) small,
+.task-overview > div:nth-child(2) span {
+  color: #746047;
+  font-size: 0.6rem;
+}
+
+.task-overview > div:nth-child(2) strong {
+  color: #3d2a1e;
+  font-size: 0.88rem;
+}
+
+.checkin-hero {
+  min-height: 90px;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: center;
+  gap: 12px;
+  color: #fff5db;
+  background:
+    linear-gradient(90deg, rgba(143, 42, 32, 0.96), rgba(33, 99, 82, 0.9)),
+    url("assets/temple-backdrop.webp") center 42% / cover;
+}
+
+.checkin-seal {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 3px double #f2cd69;
+  border-radius: 50%;
+  color: #ffe18a;
+  font-family: Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 900;
+  transform: rotate(-5deg);
+}
+
+.checkin-hero > div:last-child {
+  display: grid;
+  gap: 3px;
+}
+
+.checkin-hero small,
+.checkin-hero span {
+  color: rgba(255, 245, 215, 0.8);
+  font-size: 0.62rem;
+}
+
+.checkin-hero strong {
+  font-size: 1rem;
+}
+
+.checkin-day.day-seven {
+  grid-column: 1 / -1;
+  min-height: 76px;
+  border-color: rgba(183, 59, 45, 0.42);
+  background:
+    linear-gradient(90deg, rgba(255, 247, 222, 0.96), rgba(241, 212, 148, 0.68)),
+    url("assets/temple-board.webp") center / cover;
+}
+
+.codex-summary {
+  padding: 10px 12px;
+  display: grid;
+  gap: 3px;
+  color: #fff7df;
+  background: #176f64;
+}
+
+.codex-summary span {
+  color: #f2cf72;
+  font-size: 0.58rem;
+  font-weight: 900;
+}
+
+.codex-summary strong {
+  font-size: 0.78rem;
+}
+
+.codex-section {
+  display: grid;
+  gap: 7px;
+}
+
+.codex-section + .codex-section {
+  margin-top: 5px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(95, 65, 32, 0.16);
+}
+
+.codex-section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.codex-section-title strong {
+  color: #3e2a1d;
+  font-size: 0.82rem;
+}
+
+.codex-section-title span {
+  color: #806b50;
+  font-size: 0.58rem;
+}
+
+.artifact-codex-grid,
+.enemy-codex-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.artifact-codex-entry {
+  min-height: 70px;
+  padding: 7px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(95, 65, 32, 0.16);
+  border-left: 3px solid var(--codex-color);
+  background: rgba(255, 252, 242, 0.82);
+}
+
+.artifact-codex-entry > b {
+  color: var(--codex-color);
+  font-family: "DFKai-SB", "KaiTi", serif;
+  font-size: 1.45rem;
+  text-align: center;
+}
+
+.artifact-codex-entry > div {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.artifact-codex-entry strong,
+.deity-codex-entry strong,
+.enemy-codex-entry strong {
+  color: #402b1e;
+  font-size: 0.7rem;
+}
+
+.artifact-codex-entry span,
+.deity-codex-entry span,
+.enemy-codex-entry span,
+.artifact-codex-entry small {
+  color: #796448;
+  font-size: 0.55rem;
+}
+
+.artifact-codex-entry > small {
+  grid-column: 1 / -1;
+  padding-top: 4px;
+  border-top: 1px solid rgba(95, 65, 32, 0.1);
+  color: var(--codex-color);
+  font-weight: 900;
+}
+
+.deity-codex-list {
+  display: grid;
+  gap: 6px;
+}
+
+.deity-codex-entry {
+  min-height: 58px;
+  padding: 7px 9px;
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(95, 65, 32, 0.16);
+  background: rgba(255, 252, 242, 0.82);
+}
+
+.deity-codex-entry > div:last-child {
+  display: grid;
+  gap: 3px;
+}
+
+.deity-glyphs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  color: var(--pair-color);
+  border: 2px double var(--pair-color);
+  transform: rotate(-1deg);
+}
+
+.deity-glyphs i {
+  display: grid;
+  place-items: center;
+  min-height: 34px;
+  font-family: "DFKai-SB", "KaiTi", serif;
+  font-size: 1.1rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.deity-glyphs i + i {
+  border-left: 1px solid color-mix(in srgb, var(--pair-color) 45%, transparent);
+}
+
+.enemy-codex-entry {
+  min-height: 64px;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 6px;
+  border: 1px solid rgba(95, 65, 32, 0.16);
+  background: rgba(255, 252, 242, 0.82);
+}
+
+.enemy-codex-entry > b {
+  grid-row: 1 / 3;
+  color: var(--enemy-codex-color);
+  font-family: "DFKai-SB", "KaiTi", serif;
+  font-size: 1.35rem;
+  text-align: center;
+}
+
+.enemy-codex-entry.boss {
+  border-color: color-mix(in srgb, var(--enemy-codex-color) 42%, transparent);
+  background: rgba(246, 225, 192, 0.72);
+}
+
+@media (max-height: 740px) {
+  .game-nav {
+    min-height: 58px;
+  }
+
+  .nav-item {
+    min-height: 51px;
+    grid-template-rows: 33px 13px;
+  }
+
+  .nav-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 370px) {
+  .nav-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .hub-section-icon {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+  }
+
+  .task-overview {
+    grid-template-columns: 58px minmax(0, 1fr) auto;
+    gap: 7px;
+  }
+
+  .task-ring {
+    width: 54px;
+    height: 54px;
+  }
+}
