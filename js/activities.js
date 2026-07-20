@@ -2,8 +2,7 @@ const hubPanelEl = document.getElementById("activity-panel");
 const hubContentEl = document.getElementById("hub-content");
 const hubTitleEl = document.getElementById("hub-title");
 const hubOpenBtn = document.getElementById("hub-btn");
-const hubCloseBtn = document.getElementById("hub-close-btn");
-const hubBackdropEl = document.getElementById("hub-backdrop");
+const gameShellEl = document.getElementById("game-shell");
 const hubSectionIconEl = document.getElementById("hub-section-icon");
 
 const CHECKIN_REWARDS = [20, 25, 30, 35, 40, 50, 80];
@@ -216,14 +215,11 @@ function missionCardHtml(item, group) {
     <article class="${group === "events" ? "activity-card" : "mission-row"} ${ready ? "ready" : ""} ${claimed ? "claimed" : ""}">
       <div class="${group === "events" ? "activity-card-head" : "mission-main"}">
         <div>
-          <small class="mission-state">${claimed ? "功德已入帳" : ready ? "可以領取" : `進度 ${progress}/${item.target}`}</small>
+          <small class="mission-state">${claimed ? "功德已入帳" : ready ? "可以領取" : "進行中"}</small>
           <strong>${item.title}</strong>
           <p>${item.copy}</p>
         </div>
-        ${group === "tasks" ? `<span class="mission-count">${progress}/${item.target}</span>` : ""}
-      </div>
-      <div class="activity-progress" aria-label="${item.title}進度 ${progress}/${item.target}">
-        <i style="--progress:${percent}%"></i>
+        <span class="mission-count">${progress}/${item.target}</span>
       </div>
       <div class="reward-line">
         <span><i class="reward-flame" aria-hidden="true"></i>香火 ${item.reward}</span>
@@ -295,7 +291,7 @@ function renderCheckin() {
       <div>
         <small>${claimedToday ? "今日功課已完成" : dailyResetCopy()}</small>
         <strong>第 ${currentDay} 日香火</strong>
-        <span>${claimedToday ? "明日再回壇前參拜" : `今日可領 ${currentReward} 香火`}</span>
+        <span>${claimedToday ? "明日再回壇前參拜" : `今日可領 <i class="reward-flame" aria-hidden="true"></i>${currentReward} 香火`}</span>
       </div>
     </section>
     <div class="checkin-grid">
@@ -306,7 +302,7 @@ function renderCheckin() {
           <div class="checkin-day ${day === 7 ? "day-seven" : ""} ${day === currentDay ? "current" : ""} ${claimed ? "claimed" : ""}">
             <div>
               <span>第 ${day} 日</span>
-              <strong>香火 ${reward}</strong>
+              <strong><i class="reward-flame" aria-hidden="true"></i>香火 ${reward}</strong>
             </div>
             <i class="checkin-mark">${claimed ? "✓" : day}</i>
           </div>
@@ -330,7 +326,7 @@ function renderCodex() {
       <div class="artifact-codex-grid">
         ${Object.entries(BASE_UNITS).map(([char, def]) => `
           <article class="artifact-codex-entry" style="--codex-color:${def.color}">
-            <b>${char}</b>
+            <img src="assets/codex/${def.effect}_icon.png" class="codex-img" alt="${char}">
             <div><strong>${def.name}</strong><span>攻 ${def.damage}・距 ${def.range}</span></div>
             <small>${ATTACK_TRAITS[def.special] || "單體攻擊"}</small>
           </article>
@@ -342,7 +338,7 @@ function renderCodex() {
       <div class="deity-codex-list">
         ${GOD_PAIRS.map(pair => `
           <article class="deity-codex-entry" style="--pair-color:${pair.color}">
-            <div class="deity-glyphs"><i>${pair.chars[0]}</i><i>${pair.chars[1]}</i></div>
+            <img src="assets/codex/${pair.slug}_icon.png" class="codex-img" alt="${pair.title}">
             <div><strong>${pair.title}</strong><span>攻 ${pair.damage}・距 ${pair.range}・${ATTACK_TRAITS[pair.special]}</span></div>
           </article>
         `).join("")}
@@ -353,9 +349,10 @@ function renderCodex() {
       <div class="enemy-codex-grid">
         ${Object.entries(ENEMY_TYPES).map(([char, def]) => {
           const wave = Object.entries(BOSS_WAVES).find(([, type]) => type === char)?.[0];
+          const bossImg = def.boss ? `<img src="assets/codex/boss_${char === '魈' ? 'xiao' : char === '煞' ? 'sha' : 'mo'}.png" class="codex-img" alt="${char}">` : `<b>${char}</b>`;
           return `
             <article class="enemy-codex-entry ${def.boss ? "boss" : ""}" style="--enemy-codex-color:${def.color || "#5b3826"}">
-              <b>${char}</b><strong>${def.name}</strong><span>血 ${def.hp}${wave ? `・第 ${wave} 波` : ""}</span>
+              ${bossImg}<strong>${def.name}</strong><span>血 ${def.hp}${wave ? `・第 ${wave} 波` : ""}</span>
             </article>
           `;
         }).join("")}
@@ -415,14 +412,12 @@ function openActivityHub(tab = currentHubTab) {
     item.classList.toggle("active", item.dataset.hubTab === tab);
   });
   renderActivityHub();
-  hubPanelEl.classList.add("open");
-  hubBackdropEl.hidden = false;
+  gameShellEl.classList.add("hub-active");
   hubOpenBtn?.setAttribute("aria-expanded", "true");
 }
 
 function closeActivityHub() {
-  hubPanelEl.classList.remove("open");
-  hubBackdropEl.hidden = true;
+  gameShellEl.classList.remove("hub-active");
   hubOpenBtn?.setAttribute("aria-expanded", "false");
   document.querySelectorAll(".nav-item").forEach(item => {
     item.classList.toggle("active", item.dataset.nav === "battle");
@@ -439,8 +434,6 @@ document.querySelector("[data-nav='battle']")?.addEventListener("click", () => {
 });
 
 hubOpenBtn?.addEventListener("click", () => openActivityHub(currentHubTab));
-hubCloseBtn?.addEventListener("click", closeActivityHub);
-hubBackdropEl?.addEventListener("click", closeActivityHub);
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeActivityHub();
 });
