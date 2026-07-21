@@ -1,8 +1,32 @@
+# Dependency directories
 node_modules/
-android/
+
+# Build outputs
 www/
-*.log
-.DS_Store
-*.keystore
-.build-tools/
 builds/
+
+# Compiled Android packages
+*.apk
+*.aab
+app-debug.apk
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Security & Signing Keys
+*.jks
+*.keystore
+
+# IDE & Build-tools temp folders
+.build-tools/
+.gradle-home/
+.npm-cache/
+
+# Android build outputs & local properties
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android/.idea/
+
