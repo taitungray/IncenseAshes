@@ -1,0 +1,18 @@
+{
+  "name": "廟埕守香",
+  "short_name": "廟埕守香",
+  "description": "台灣神明文字塔防 - 廟埕守香",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#16110C",
+  "theme_color": "#8f2d22",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/app_icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

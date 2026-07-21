@@ -326,7 +326,7 @@ function renderCodex() {
       <div class="artifact-codex-grid">
         ${Object.entries(BASE_UNITS).map(([char, def]) => `
           <article class="artifact-codex-entry" style="--codex-color:${def.color}">
-            <img src="assets/codex/${def.effect}_icon.png" class="codex-img" alt="${char}">
+            <img src="assets/codex/${def.effect}_icon.png" data-large-img="assets/codex/large/${def.effect}_icon.png" class="codex-img" alt="${char}">
             <div><strong>${def.name}</strong><span>攻 ${def.damage}・距 ${def.range}</span></div>
             <small>${ATTACK_TRAITS[def.special] || "單體攻擊"}</small>
           </article>
@@ -338,7 +338,7 @@ function renderCodex() {
       <div class="deity-codex-list">
         ${GOD_PAIRS.map(pair => `
           <article class="deity-codex-entry" style="--pair-color:${pair.color}">
-            <img src="assets/codex/${pair.slug}_icon.png" class="codex-img" alt="${pair.title}">
+            <img src="assets/codex/${pair.slug}_icon.png" data-large-img="assets/codex/large/${pair.slug}_icon.png" class="codex-img" alt="${pair.title}">
             <div><strong>${pair.title}</strong><span>攻 ${pair.damage}・距 ${pair.range}・${ATTACK_TRAITS[pair.special]}</span></div>
           </article>
         `).join("")}
@@ -349,7 +349,9 @@ function renderCodex() {
       <div class="enemy-codex-grid">
         ${Object.entries(ENEMY_TYPES).map(([char, def]) => {
           const wave = Object.entries(BOSS_WAVES).find(([, type]) => type === char)?.[0];
-          const bossImg = def.boss ? `<img src="assets/codex/boss_${char === '魈' ? 'xiao' : char === '煞' ? 'sha' : 'mo'}.png" class="codex-img" alt="${char}">` : `<b>${char}</b>`;
+          const ENEMY_IMG_MAP = { "魈": "boss_xiao", "煞": "boss_sha", "魔": "boss_mo", "妖": "enemy_yao", "鬼": "enemy_gui", "怪": "enemy_guai" };
+          const imgName = ENEMY_IMG_MAP[char];
+          const bossImg = imgName ? `<img src="assets/codex/${imgName}.png" data-large-img="assets/codex/large/${imgName}.png" class="codex-img" alt="${char}">` : `<b>${char}</b>`;
           return `
             <article class="enemy-codex-entry ${def.boss ? "boss" : ""}" style="--enemy-codex-color:${def.color || "#5b3826"}">
               ${bossImg}<strong>${def.name}</strong><span>血 ${def.hp}${wave ? `・第 ${wave} 波` : ""}</span>
@@ -440,3 +442,17 @@ document.addEventListener("keydown", event => {
 
 renderActivityHub();
 updateActivityAlerts();
+
+document.addEventListener("click", event => {
+  if (event.target.matches("[data-large-img]")) {
+    const modal = document.getElementById("image-modal");
+    const img = document.getElementById("image-modal-img");
+    if (modal && img) {
+      img.src = event.target.dataset.largeImg;
+      modal.classList.remove("hidden");
+    }
+  }
+  if (event.target.matches("#image-modal-close") || event.target.matches("#image-modal")) {
+    document.getElementById("image-modal")?.classList.add("hidden");
+  }
+});

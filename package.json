@@ -1,0 +1,19 @@
+{
+  "name": "incense-ashes",
+  "version": "1.0.0",
+  "description": "台灣神明文字塔防 - 廟埕守香",
+  "main": "index.html",
+  "scripts": {
+    "build": "node build.js",
+    "release:android": "powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/splash-screen": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^6.0.0"
+  }
+}

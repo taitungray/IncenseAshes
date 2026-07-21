@@ -3985,7 +3985,6 @@ body.dragging-card {
   cursor: pointer;
 }
 
-.nav-item:hover,
 .nav-item.active {
   color: #fff7df;
   border-color: rgba(255, 226, 141, 0.34);
@@ -4199,9 +4198,6 @@ body.dragging-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.activity-card:hover,
-.mission-row:hover,
-.checkin-day:hover,
 .codex-entry:hover {
   transform: translateY(-2px);
   border-color: rgba(215, 160, 47, 0.4);
@@ -6201,4 +6197,94 @@ h1 {
     width: 54px;
     height: 54px;
   }
+}
+
+/* Image Modal */
+.image-modal-card {
+  position: relative;
+  width: min(100%, 420px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.image-modal-card img {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.8);
+  border: 2px solid rgba(215, 160, 47, 0.8);
+}
+.modal-close-btn {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 2rem;
+  border: none;
+  cursor: pointer;
+  padding: 0 10px;
+  line-height: 1;
+}
+
+/* Title Screen */
+.title-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: 
+    linear-gradient(to bottom, rgba(22, 17, 12, 0.4), rgba(22, 17, 12, 0.9)),
+    url("assets/splash.png") center/cover no-repeat;
+  z-index: 1000;
+  color: var(--paper);
+}
+
+.title-screen .title-content {
+  text-align: center;
+}
+
+.title-screen h1 {
+  font-size: 3.5rem;
+  margin: 0.5rem 0 3rem;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.8), 0 0 20px rgba(215, 160, 47, 0.5);
+  color: var(--gold);
+}
+
+.title-screen .eyebrow {
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  color: var(--paper-deep);
+}
+
+.start-btn {
+  font-size: 1.8rem;
+  padding: 1rem 3rem;
+  background: var(--cinnabar);
+  color: #fff;
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(197, 52, 36, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.start-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(197, 52, 36, 0.4);
+}
+
+.title-footer {
+  position: absolute;
+  bottom: 24px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
 }
