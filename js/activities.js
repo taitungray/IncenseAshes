@@ -328,7 +328,7 @@ function renderCodex() {
           const unlocked = saveData.unlockedUnits.includes(def.effect);
           return `
           <article class="artifact-codex-entry ${unlocked ? "" : "locked"}" style="--codex-color:${def.color}">
-            <img src="assets/codex/${def.effect}_icon.png" data-large-img="${unlocked ? `assets/codex/large/${def.effect}_icon.png` : ""}" class="codex-img" alt="${char}">
+            <img src="assets/tujian/${def.effect}_icon.png" class="codex-img" alt="${char}">
             <div><strong>${unlocked ? def.name : "？？？"}</strong><span>攻 ${unlocked ? def.damage : "?"}・距 ${unlocked ? def.range : "?"}</span></div>
             <small>${unlocked ? (ATTACK_TRAITS[def.special] || "單體攻擊") : "未解鎖"}</small>
           </article>
@@ -342,7 +342,7 @@ function renderCodex() {
           const unlocked = saveData.unlockedUnits.includes(pair.slug);
           return `
           <article class="deity-codex-entry ${unlocked ? "" : "locked"}" style="--pair-color:${pair.color}">
-            <img src="assets/codex/${pair.slug}_icon.png" data-large-img="${unlocked ? `assets/codex/large/${pair.slug}_icon.png` : ""}" class="codex-img" alt="${pair.title}">
+            <img src="assets/tujian/${pair.slug}_icon.png" class="codex-img" alt="${pair.title}">
             <div><strong>${unlocked ? pair.title : "？？？"}</strong><span>攻 ${unlocked ? pair.damage : "?"}・距 ${unlocked ? pair.range : "?"}・${unlocked ? ATTACK_TRAITS[pair.special] : "未解鎖"}</span></div>
           </article>
         `}).join("")}
@@ -356,7 +356,7 @@ function renderCodex() {
           const wave = Object.entries(BOSS_WAVES).find(([, type]) => type === char)?.[0];
           const ENEMY_IMG_MAP = { "魈": "boss_xiao", "煞": "boss_sha", "魔": "boss_mo", "妖": "enemy_yao", "鬼": "enemy_gui", "怪": "enemy_guai" };
           const imgName = ENEMY_IMG_MAP[char];
-          const bossImg = imgName ? `<img src="assets/codex/${imgName}.png" data-large-img="${unlocked ? `assets/codex/large/${imgName}.png` : ""}" class="codex-img" alt="${char}">` : `<b>${char}</b>`;
+          const bossImg = imgName ? `<img src="assets/tujian/${imgName}.png" class="codex-img" alt="${char}">` : `<b>${char}</b>`;
           return `
             <article class="enemy-codex-entry ${def.boss ? "boss" : ""} ${unlocked ? "" : "locked"}" style="--enemy-codex-color:${def.color || "#5b3826"}">
               ${bossImg}<strong>${unlocked ? def.name : "？？？"}</strong><span>血 ${unlocked ? def.hp : "?"}${wave ? `・第 ${wave} 波` : ""}</span>
