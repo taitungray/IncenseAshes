@@ -190,8 +190,8 @@ try {
 
   $AabSource = Join-Path $Root "android\app\build\outputs\bundle\release\app-release.aab"
   $ApkSource = Join-Path $Root "android\app\build\outputs\apk\release\app-release.apk"
-  $AabDest = Join-Path $BuildsDir "chengyu-$VersionName-release.aab"
-  $ApkDest = Join-Path $BuildsDir "chengyu-$VersionName-release.apk"
+  $AabDest = Join-Path $BuildsDir "incense-ashes-$VersionName-release.aab"
+  $ApkDest = Join-Path $BuildsDir "incense-ashes-$VersionName-release.apk"
 
   Wait-ForFile $AabSource "Release AAB" | Out-Null
   Wait-ForFile $ApkSource "Release APK" | Out-Null
