@@ -43,7 +43,7 @@ button {
   width: min(100vw, 486px);
   height: min(100dvh, 920px);
   margin: 0 auto;
-  padding: 12px;
+  padding: max(12px, env(safe-area-inset-top, 12px)) 12px max(12px, env(safe-area-inset-bottom, 12px));
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto auto;
   gap: 9px;
@@ -743,15 +743,12 @@ body.dragging-card {
   --god-ink: #a24d05;
 }
 
-.god-mazu[data-fragment="媽"] {
-  --god-paper: #e6f6ff;
-  --god-ink: #006fb8;
-}
-
+.god-mazu[data-fragment="媽"],
 .god-mazu[data-fragment="祖"] {
-  --god-paper: #eef8e5;
-  --god-color: #1190a8;
-  --god-ink: #0d7f8e;
+  --god-paper: #e6f6ff;
+  --god-color: #0b78b6;
+  --god-glow: rgba(38, 151, 190, 0.38);
+  --god-ink: #006fb8;
 }
 
 .god-guanyin[data-fragment="觀"],
@@ -762,16 +759,12 @@ body.dragging-card {
   --god-ink: #13834a;
 }
 
-.god-chenghuang[data-fragment="城"] {
+.god-chenghuang[data-fragment="城"],
+.god-chenghuang[data-fragment="隍"] {
   --god-paper: #f3eaff;
   --god-color: #7b3fc7;
+  --god-glow: rgba(111, 76, 157, 0.36);
   --god-ink: #6124ad;
-}
-
-.god-chenghuang[data-fragment="隍"] {
-  --god-paper: #efe7ff;
-  --god-color: #6542c2;
-  --god-ink: #4f2a9b;
 }
 
 .god-chenghuang .glyph-core,
@@ -783,29 +776,22 @@ body.dragging-card {
   color: color-mix(in srgb, var(--god-color) 86%, #1e130d) !important;
 }
 
-.god-guangong[data-fragment="關"] {
+.god-guangong[data-fragment="關"],
+.god-guangong[data-fragment="公"] {
   --god-paper: #fff0e8;
   --god-color: #c81f1a;
+  --god-glow: rgba(207, 56, 38, 0.34);
   --god-ink: #b01612;
 }
 
-.god-guangong[data-fragment="公"] {
-  --god-paper: #fff4e6;
-  --god-color: #d43a1c;
-  --god-ink: #a92a12;
-}
-
-.god-wangye[data-fragment="王"] {
+.god-wangye[data-fragment="王"],
+.god-wangye[data-fragment="爺"] {
   --god-paper: #fff3df;
   --god-color: #c96f10;
+  --god-glow: rgba(177, 101, 33, 0.35);
   --god-ink: #ad5606;
 }
 
-.god-wangye[data-fragment="爺"] {
-  --god-paper: #fff0d8;
-  --god-color: #b85f0d;
-  --god-ink: #914806;
-}
 
 .god-mazu[data-fragment="媽"] .glyph-core,
 .god-mazu[data-fragment="媽"] .whole-glyph,

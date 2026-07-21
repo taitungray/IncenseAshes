@@ -96,6 +96,9 @@ if (CapApp) {
   // 1. App Lifecycle: Pause/Resume
   CapApp.addListener('appStateChange', ({ isActive }) => {
     if (!isActive) {
+      if (typeof gameAudio?.pauseForBackground === "function") {
+        gameAudio.pauseForBackground();
+      }
       if (state.interval) {
         clearInterval(state.interval);
         state.interval = null;
@@ -105,6 +108,9 @@ if (CapApp) {
         }
       }
     } else {
+      if (typeof gameAudio?.resumeFromBackground === "function") {
+        gameAudio.resumeFromBackground();
+      }
       if (state.phase === "paused" && titleScreen.style.display === "none") {
         state.phase = "play";
         state.interval = setInterval(gameTick, TICK_MS);

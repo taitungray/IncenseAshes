@@ -426,3 +426,31 @@ audioButton?.addEventListener("click", toggleGameAudio);
 document.addEventListener("pointerdown", unlockAudioFromGesture, true);
 document.addEventListener("keydown", unlockAudioFromGesture, true);
 updateAudioButton();
+
+function pauseAudioForBackground() {
+  if (gameAudio.context && gameAudio.context.state === "running") {
+    gameAudio.context.suspend().catch(() => {});
+  }
+}
+
+function resumeAudioFromBackground() {
+  if (gameAudio.context && !gameAudio.muted && gameAudio.unlocked) {
+    if (gameAudio.context.state === "suspended") {
+      gameAudio.context.resume().catch(() => {});
+    }
+  }
+}
+
+gameAudio.pauseForBackground = pauseAudioForBackground;
+gameAudio.resumeFromBackground = resumeAudioFromBackground;
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    pauseAudioForBackground();
+  } else {
+    resumeAudioFromBackground();
+  }
+});
+
+document.addEventListener("pause", pauseAudioForBackground, false);
+document.addEventListener("resume", resumeAudioFromBackground, false);
