@@ -6230,6 +6230,18 @@ h1 {
   line-height: 1;
 }
 
+/* Codex Locked State */
+.artifact-codex-entry.locked,
+.deity-codex-entry.locked,
+.enemy-codex-entry.locked {
+  filter: grayscale(1) opacity(0.7);
+}
+.artifact-codex-entry.locked img,
+.deity-codex-entry.locked img,
+.enemy-codex-entry.locked img {
+  filter: brightness(0); /* Black silhouette */
+}
+
 /* Title Screen */
 .title-screen {
   position: absolute;
@@ -6247,11 +6259,16 @@ h1 {
 
 .title-screen .title-content {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 65vh;
 }
 
 .title-screen h1 {
   font-size: 3.5rem;
-  margin: 0.5rem 0 3rem;
+  margin: 0.5rem 0 auto;
   text-shadow: 0 4px 12px rgba(0,0,0,0.8), 0 0 20px rgba(215, 160, 47, 0.5);
   color: var(--gold);
 }

@@ -1,4 +1,4 @@
-﻿const boardEl = document.getElementById("board");
+const boardEl = document.getElementById("board");
 const enemyLayer = document.getElementById("enemy-layer");
 const fxLayer = document.getElementById("fx-layer");
 const benchEl = document.getElementById("bench");
@@ -59,5 +59,40 @@ let dragState = null;
 
 function canManageUnits() {
   return ["ready", "play", "paused", "between"].includes(state.phase);
+}
+
+// Global Save Data
+function loadSaveData() {
+  let saved = null;
+  try {
+    saved = JSON.parse(localStorage.getItem("incense-save"));
+  } catch {}
+  return {
+    highestWave: 1,
+    unlockedUnits: [], // Array of slugs e.g., 'charm', 'guangong'
+    ...saved
+  };
+}
+
+const saveData = loadSaveData();
+
+function persistSaveData() {
+  try {
+    localStorage.setItem("incense-save", JSON.stringify(saveData));
+  } catch {}
+}
+
+function unlockUnit(slug) {
+  if (!saveData.unlockedUnits.includes(slug)) {
+    saveData.unlockedUnits.push(slug);
+    persistSaveData();
+  }
+}
+
+function recordHighestWave(wave) {
+  if (wave > saveData.highestWave) {
+    saveData.highestWave = wave;
+    persistSaveData();
+  }
 }
 

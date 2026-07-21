@@ -324,37 +324,42 @@ function renderCodex() {
     <section class="codex-section">
       <div class="codex-section-title"><strong>五方法器</strong><span>皆可升至 5 級</span></div>
       <div class="artifact-codex-grid">
-        ${Object.entries(BASE_UNITS).map(([char, def]) => `
-          <article class="artifact-codex-entry" style="--codex-color:${def.color}">
-            <img src="assets/codex/${def.effect}_icon.png" data-large-img="assets/codex/large/${def.effect}_icon.png" class="codex-img" alt="${char}">
-            <div><strong>${def.name}</strong><span>攻 ${def.damage}・距 ${def.range}</span></div>
-            <small>${ATTACK_TRAITS[def.special] || "單體攻擊"}</small>
+        ${Object.entries(BASE_UNITS).map(([char, def]) => {
+          const unlocked = saveData.unlockedUnits.includes(def.effect);
+          return `
+          <article class="artifact-codex-entry ${unlocked ? "" : "locked"}" style="--codex-color:${def.color}">
+            <img src="assets/codex/${def.effect}_icon.png" data-large-img="${unlocked ? `assets/codex/large/${def.effect}_icon.png` : ""}" class="codex-img" alt="${char}">
+            <div><strong>${unlocked ? def.name : "？？？"}</strong><span>攻 ${unlocked ? def.damage : "?"}・距 ${unlocked ? def.range : "?"}</span></div>
+            <small>${unlocked ? (ATTACK_TRAITS[def.special] || "單體攻擊") : "未解鎖"}</small>
           </article>
-        `).join("")}
+        `}).join("")}
       </div>
     </section>
     <section class="codex-section">
       <div class="codex-section-title"><strong>神明合字</strong><span>相鄰啟動・共用等級</span></div>
       <div class="deity-codex-list">
-        ${GOD_PAIRS.map(pair => `
-          <article class="deity-codex-entry" style="--pair-color:${pair.color}">
-            <img src="assets/codex/${pair.slug}_icon.png" data-large-img="assets/codex/large/${pair.slug}_icon.png" class="codex-img" alt="${pair.title}">
-            <div><strong>${pair.title}</strong><span>攻 ${pair.damage}・距 ${pair.range}・${ATTACK_TRAITS[pair.special]}</span></div>
+        ${GOD_PAIRS.map(pair => {
+          const unlocked = saveData.unlockedUnits.includes(pair.slug);
+          return `
+          <article class="deity-codex-entry ${unlocked ? "" : "locked"}" style="--pair-color:${pair.color}">
+            <img src="assets/codex/${pair.slug}_icon.png" data-large-img="${unlocked ? `assets/codex/large/${pair.slug}_icon.png` : ""}" class="codex-img" alt="${pair.title}">
+            <div><strong>${unlocked ? pair.title : "？？？"}</strong><span>攻 ${unlocked ? pair.damage : "?"}・距 ${unlocked ? pair.range : "?"}・${unlocked ? ATTACK_TRAITS[pair.special] : "未解鎖"}</span></div>
           </article>
-        `).join("")}
+        `}).join("")}
       </div>
     </section>
     <section class="codex-section">
       <div class="codex-section-title"><strong>妖邪錄</strong><span>魔王於指定波次壓陣</span></div>
       <div class="enemy-codex-grid">
         ${Object.entries(ENEMY_TYPES).map(([char, def]) => {
+          const unlocked = saveData.unlockedUnits.includes(char);
           const wave = Object.entries(BOSS_WAVES).find(([, type]) => type === char)?.[0];
           const ENEMY_IMG_MAP = { "魈": "boss_xiao", "煞": "boss_sha", "魔": "boss_mo", "妖": "enemy_yao", "鬼": "enemy_gui", "怪": "enemy_guai" };
           const imgName = ENEMY_IMG_MAP[char];
-          const bossImg = imgName ? `<img src="assets/codex/${imgName}.png" data-large-img="assets/codex/large/${imgName}.png" class="codex-img" alt="${char}">` : `<b>${char}</b>`;
+          const bossImg = imgName ? `<img src="assets/codex/${imgName}.png" data-large-img="${unlocked ? `assets/codex/large/${imgName}.png` : ""}" class="codex-img" alt="${char}">` : `<b>${char}</b>`;
           return `
-            <article class="enemy-codex-entry ${def.boss ? "boss" : ""}" style="--enemy-codex-color:${def.color || "#5b3826"}">
-              ${bossImg}<strong>${def.name}</strong><span>血 ${def.hp}${wave ? `・第 ${wave} 波` : ""}</span>
+            <article class="enemy-codex-entry ${def.boss ? "boss" : ""} ${unlocked ? "" : "locked"}" style="--enemy-codex-color:${def.color || "#5b3826"}">
+              ${bossImg}<strong>${unlocked ? def.name : "？？？"}</strong><span>血 ${unlocked ? def.hp : "?"}${wave ? `・第 ${wave} 波` : ""}</span>
             </article>
           `;
         }).join("")}

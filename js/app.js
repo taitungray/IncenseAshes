@@ -88,3 +88,49 @@ if (SplashScreen) {
   }, 100);
 }
 
+// Capacitor App Plugin Handlers
+const CapApp = (typeof window !== 'undefined' && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App)
+  ? window.Capacitor.Plugins.App : null;
+
+if (CapApp) {
+  // 1. App Lifecycle: Pause/Resume
+  CapApp.addListener('appStateChange', ({ isActive }) => {
+    if (!isActive) {
+      if (state.interval) {
+        clearInterval(state.interval);
+        state.interval = null;
+        if (state.phase === "play") {
+          state.phase = "paused";
+          if (typeof updateHud === "function") updateHud();
+        }
+      }
+    } else {
+      if (state.phase === "paused" && titleScreen.style.display === "none") {
+        state.phase = "play";
+        state.interval = setInterval(gameTick, TICK_MS);
+      }
+    }
+  });
+
+  // 2. Android Back Button Handling
+  CapApp.addListener('backButton', () => {
+    // Check if any modal is open
+    const openModal = document.querySelector('.modal:not(.hidden)');
+    if (openModal) {
+      openModal.classList.add('hidden');
+      return;
+    }
+    
+    // Check if activity hub is open
+    if (typeof gameShellEl !== 'undefined' && gameShellEl.classList.contains('hub-active')) {
+      if (typeof closeActivityHub === 'function') closeActivityHub();
+      return;
+    }
+
+    // Otherwise prompt to exit
+    if (confirm("確定要退出《廟埕守香》嗎？")) {
+      CapApp.exitApp();
+    }
+  });
+}
+

@@ -1,7 +1,8 @@
-﻿function addBenchUnit(unit) {
+function addBenchUnit(unit) {
   if (state.bench.length < BENCH_LIMIT) {
     state.bench.push(unit);
     state.inspected = { source: "bench", index: state.bench.length - 1 };
+    if (unit.effect) unlockUnit(unit.effect);
   }
 }
 
@@ -94,6 +95,7 @@ function spawnEnemy() {
     enraged: false
   };
   state.enemies.push(enemy);
+  unlockUnit(type);
 
   if (data.boss) {
     const entrance = PATH[0];
@@ -429,6 +431,7 @@ function announceNewGodPairs(previousIds) {
     playGameSound("summonGod");
     godCallVfx(pair.cx, pair.cy, pair.def.color, label);
     log(`${pair.def.title}已啟動。`);
+    unlockUnit(pair.def.slug);
   });
 }
 
@@ -491,6 +494,7 @@ function checkWaveClear() {
     setTimeout(openChoices, 550);
   } else {
     state.wave += 1;
+    recordHighestWave(state.wave);
     log(`第 ${state.wave - 1} 波已淨，香路待陣。`);
     renderAll();
   }
@@ -508,6 +512,7 @@ function openChoices() {
       choice.apply(state);
       choiceModal.classList.add("hidden");
       state.wave += 1;
+      recordHighestWave(state.wave);
       state.phase = "between";
       playGameSound("blessing");
       log(`${choice.name}落籤。`);

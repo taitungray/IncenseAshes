@@ -3,3 +3,6 @@ android/
 www/
 *.log
 .DS_Store
+*.keystore
+.build-tools/
+builds/

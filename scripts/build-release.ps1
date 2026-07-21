@@ -189,18 +189,27 @@ try {
   New-Item -ItemType Directory -Force -Path $BuildsDir | Out-Null
 
   $AabSource = Join-Path $Root "android\app\build\outputs\bundle\release\app-release.aab"
-  $ApkSource = Join-Path $Root "android\app\build\outputs\apk\release\app-release.apk"
+  $ApkSource = Join-Path $Root "android\app\build\outputs\apk\release\app-release-unsigned.apk"
   $AabDest = Join-Path $BuildsDir "incense-ashes-$VersionName-release.aab"
   $ApkDest = Join-Path $BuildsDir "incense-ashes-$VersionName-release.apk"
 
   Wait-ForFile $AabSource "Release AAB" | Out-Null
-  Wait-ForFile $ApkSource "Release APK" | Out-Null
+  Wait-ForFile $ApkSource "Release APK (Unsigned)" | Out-Null
 
   Copy-Item -LiteralPath $AabSource -Destination $AabDest -Force
-  Copy-Item -LiteralPath $ApkSource -Destination $ApkDest -Force
-
-  Write-Step "Verify APK Signature"
+  
+  Write-Step "Signing Release APK"
   $ApkSigner = Join-Path $SdkDir "build-tools\35.0.0\apksigner.bat"
+  $KeystorePath = Join-Path $Root "release.keystore"
+  
+  if (-not (Test-Path $KeystorePath)) {
+    Write-Step "Generating Release Keystore"
+    & keytool -genkeypair -v -keystore $KeystorePath -alias release -keyalg RSA -keysize 2048 -validity 10000 -storepass "password" -keypass "password" -dname "CN=IncenseAshes, OU=Game, O=IncenseAshes, L=Unknown, ST=Unknown, C=TW"
+  }
+  
+  & $ApkSigner sign --ks $KeystorePath --ks-pass "pass:password" --out $ApkDest $ApkSource
+  
+  Write-Step "Verify APK Signature"
   & $ApkSigner verify --verbose --print-certs $ApkDest
 
   Write-Step "Done"
