@@ -110,8 +110,8 @@ function Ensure-AndroidSdk {
   $env:ANDROID_SDK_ROOT = $SdkDir
   1..30 | ForEach-Object { "y" } | & $SdkManager --licenses | Out-Host
 
-  Write-Step "Install Android SDK 35 Components"
-  & $SdkManager "platforms;android-35" "build-tools;35.0.0" "platform-tools"
+  Write-Step "Install Android SDK 36 Components"
+  & $SdkManager "platforms;android-36" "build-tools;36.0.0" "platform-tools"
 }
 
 function Set-LocalSdkDir {
@@ -212,7 +212,7 @@ try {
   Copy-Item -LiteralPath $ApkSource -Destination $ApkDest -Force
 
   Write-Step "Verify Signatures"
-  $ApkSigner = Join-Path $SdkDir "build-tools\35.0.0\apksigner.bat"
+  $ApkSigner = Join-Path $SdkDir "build-tools\36.0.0\apksigner.bat"
   & $ApkSigner verify --verbose --print-certs $ApkDest
 
   Write-Step "Done"

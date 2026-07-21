@@ -12,7 +12,7 @@ powershell -ExecutionPolicy Bypass -File scripts\build-release.ps1
 
 Do not run raw Gradle, switch JDKs, change `JAVA_HOME`, or improvise Android SDK commands unless explicitly asked.
 
-The release script handles web build, Capacitor sync, JDK 17, Android SDK 35, signed AAB/APK output, and APK signature verification.
+The release script handles web build, Capacitor sync, JDK 17, Android SDK 36, signed AAB/APK output, and APK signature verification.
 
 ## 核心設計準則 (Design Rules)
 
