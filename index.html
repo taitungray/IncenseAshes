@@ -4,11 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#8f2d22">
+  <link rel="manifest" href="manifest.json">
   <title>廟埕守香</title>
     <link rel="stylesheet" href="style.css?v=mobile-13">
 </head>
 <body>
-  <main id="game-shell">
+  <div id="title-screen" class="title-screen">
+    <div class="title-content">
+      <p class="eyebrow">台灣神明文字塔防</p>
+      <h1>廟埕守香</h1>
+      <button id="start-game-btn" type="button" class="start-btn">入廟鎮守</button>
+    </div>
+    <div class="title-footer">
+      <p>v1.0.0 &copy; 2026 廟埕守香 Incense Ashes. All Rights Reserved.</p>
+    </div>
+  </div>
+
+  <main id="game-shell" style="display: none;">
     <header class="top-panel">
       <div class="brand-lockup">
         <p class="eyebrow">台灣神明文字塔防</p>
@@ -39,6 +51,7 @@
       </section>
 
       <div class="header-actions">
+        <button id="speed-btn" type="button" aria-label="戰鬥速度 1 倍" aria-pressed="false" title="戰鬥速度">1×</button>
         <button id="hub-btn" type="button" aria-label="開啟活動中心" aria-expanded="false" title="活動中心">
           <span aria-hidden="true">祭</span>
         </button>
@@ -70,7 +83,6 @@
           </div>
           <div class="altar-actions">
             <button id="pace-btn" type="button">迎第 1 波</button>
-            <button id="speed-btn" type="button" aria-label="戰鬥速度 1 倍" aria-pressed="false" title="戰鬥速度">1×</button>
             <button id="discard-zone" type="button" aria-label="化去" title="化去"><span>化去</span></button>
             <button id="summon-btn" type="button">請令 <small id="summon-cost">18</small></button>
           </div>
@@ -127,6 +139,13 @@
       <p class="eyebrow">籤詩</p>
       <h2 id="choice-title">擇一加持</h2>
       <div id="choice-list" class="choice-list"></div>
+    </div>
+  </div>
+
+  <div id="image-modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="大圖預覽">
+    <div class="image-modal-card">
+      <button id="image-modal-close" class="modal-close-btn" type="button" aria-label="關閉">×</button>
+      <img id="image-modal-img" src="" alt="大圖預覽">
     </div>
   </div>
 

@@ -1,4 +1,4 @@
-﻿function endGame(win) {
+function endGame(win) {
   state.phase = "ended";
   playGameSound(win ? "win" : "lose");
   resultKicker.textContent = win ? "香火鼎盛" : "香爐失守";
@@ -57,6 +57,34 @@ restartBtn.addEventListener("click", () => {
 });
 resultBtn.addEventListener("click", resetGame);
 
-resetGame();
-state.interval = setInterval(gameTick, TICK_MS);
+const titleScreen = document.getElementById("title-screen");
+const gameShell = document.getElementById("game-shell");
+const startGameBtn = document.getElementById("start-game-btn");
+
+startGameBtn.addEventListener("click", () => {
+  titleScreen.style.display = "none";
+  gameShell.style.display = ""; // Remove inline display:none
+  playGameSound("place"); // Play a sound on start
+  resetGame();
+  if (state.interval) clearInterval(state.interval);
+  state.interval = setInterval(gameTick, TICK_MS);
+});
+
+// App & PWA initializations
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(err => {
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
+
+// Hide Capacitor Splash Screen
+const SplashScreen = (typeof window !== 'undefined' && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SplashScreen) 
+  ? window.Capacitor.Plugins.SplashScreen : null;
+if (SplashScreen) {
+  setTimeout(() => {
+    SplashScreen.hide().catch(err => console.warn(err));
+  }, 100);
+}
 
