@@ -163,6 +163,9 @@ try {
 
   Ensure-AndroidSdk
 
+  Write-Step "Install NPM Dependencies"
+  Invoke-Checked "npm.cmd" @("install")
+
   Write-Step "Build Web assets"
   Invoke-Checked "node" @("build.js")
 
