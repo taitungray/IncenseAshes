@@ -22,7 +22,7 @@ function pulseUnitAt(x, y, target = null) {
   void unitEl.offsetWidth;
   unitEl.classList.add("attacking");
   if (unit) unitRadicalVfx(x, y, unit, dx, dy);
-  setTimeout(() => unitEl.classList.remove("attacking"), 560);
+  setTimeout(() => unitEl.classList.remove("attacking"), 700);
 }
 
 function unitRadicalVfx(x, y, unit, dx, dy) {

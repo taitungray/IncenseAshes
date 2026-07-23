@@ -234,9 +234,11 @@ function glyphHtml(char, split = false) {
   if (split && char === "符") {
     return (
       `<span class="glyph artifact-glyph artifact-glyph-符" data-glyph="符" role="img" aria-label="符">`
-      + `<span class="artifact-charm-whole">符</span>`
+      + `<span class="artifact-rest-whole artifact-charm-whole">符</span>`
+      + `<span class="artifact-parts">`
       + `<span class="artifact-part artifact-part-0 artifact-charm-radical">⺮</span>`
       + `<span class="artifact-part artifact-part-1 artifact-charm-body">付</span>`
+      + `</span>`
       + `</span>`
     );
   }
@@ -244,9 +246,11 @@ function glyphHtml(char, split = false) {
   if (split && char === "印") {
     return (
       `<span class="glyph artifact-glyph artifact-glyph-印" data-glyph="印" role="img" aria-label="印">`
-      + `<span class="artifact-ink-whole">印</span>`
+      + `<span class="artifact-rest-whole artifact-ink-whole">印</span>`
+      + `<span class="artifact-parts">`
       + `<span class="artifact-part artifact-part-0 artifact-ink-slice artifact-ink-left"><span class="artifact-ink-source">印</span></span>`
-      + `<span class="artifact-part artifact-part-1 artifact-ink-weapon">卩</span>`
+      + `<span class="artifact-part artifact-part-1 artifact-ink-slice artifact-ink-right"><span class="artifact-ink-source">印</span></span>`
+      + `</span>`
       + `</span>`
     );
   }
@@ -255,7 +259,12 @@ function glyphHtml(char, split = false) {
     const legacyParts = GLYPH_PARTS[char]
       .map((part, index) => `<span class="artifact-part artifact-part-${index}" data-part="${part}">${part}</span>`)
       .join("");
-    return `<span class="glyph artifact-glyph artifact-glyph-${char}" data-glyph="${char}" role="img" aria-label="${char}">${legacyParts}</span>`;
+    return (
+      `<span class="glyph artifact-glyph artifact-glyph-${char}" data-glyph="${char}" role="img" aria-label="${char}">`
+      + `<span class="artifact-rest-whole">${char}</span>`
+      + `<span class="artifact-parts">${legacyParts}</span>`
+      + `</span>`
+    );
   }
   return `<span class="glyph whole-glyph" data-glyph="${char}">${char}</span>`;
 }
